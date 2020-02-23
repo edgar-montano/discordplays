@@ -1,0 +1,31 @@
+{
+  "name": "discordplays",
+  "version": "1.0.0",
+  "description": "Simulates user keys and events allowing users to play a game collaboratively.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edgar-montano/discordplays.git"
+  },
+  "keywords": [
+    "discordplays",
+    "discord",
+    "bot"
+  ],
+  "author": "Edgar Montano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edgar-montano/discordplays/issues"
+  },
+  "homepage": "https://github.com/edgar-montano/discordplays#readme",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "discord.js": "^11.5.1",
+    "dotenv": "^8.2.0",
+    "robotjs": "^0.6.0",
+    "string-hex": "^1.0.0"
+  }
+}
