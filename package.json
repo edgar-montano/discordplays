@@ -4,7 +4,8 @@
   "description": "Simulates user keys and events allowing users to play a game collaboratively.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/test.js",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
