@@ -7,10 +7,11 @@
   "right": "right",
   "d": "down",
   "down": "down",
-  "s": "start",
-  "start": "start",
+  "s": "enter",
+  "start": "enter",
   "a": "a",
   "b": "b",
   "z": "z",
-  "x": "x"
+  "x": "x",
+  "enter": "enter"
 }

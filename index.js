@@ -27,5 +27,25 @@ client.on("ready", () => {
 
 client.on("message", message => {
   let msg = processMessage(message);
-  //   console.log(msg);
+  if (msg !== null) {
+    let userName = message.member.user.tag;
+    let userColor = hexString(userName);
+    let repeated = parseInt(msg["repeated"]);
+    let userInput = validInput[msg["key"]];
+    // log user input message
+    console.log(
+      chalk.hex(userColor).bold(userName) +
+        "=> " +
+        chalk.yellow(userInput) +
+        " repeated:" +
+        chalk.magentaBright(repeated) +
+        " @ " +
+        chalk.magenta(message.createdAt)
+    );
+    //execute keytap at least once
+    do {
+      robot.keyTap(userInput);
+      repeated--;
+    } while (repeated > 0);
+  }
 });
