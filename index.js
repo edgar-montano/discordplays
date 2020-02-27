@@ -24,6 +24,17 @@ client.on("ready", () => {
   let name = client.user.tag;
   console.info(chalk.hex(hexString(name)).underline(`Logged in as ${name}\n`));
   require("./utils/usage")(validInput, alternativeInput);
+  // const generalChannel = client.channels.find(
+  //   channel => channel.name === "general"
+  // );
+  const channel = client.channels.get(process.env.CHANNEL);
+  if (channel) {
+    channel.send(`Welcome, I am ${client.user.tag}! Shall we play a game?
+    \nValid inputs: \n\t__Case Sensitive__: **${Object.keys(
+      alternativeInput
+    ).join(", ")}**
+    \n\t__Case Insensitive__: **${Object.keys(validInput).join(", ")}**`);
+  }
 });
 
 client.on("message", message => {
