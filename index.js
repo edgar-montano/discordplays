@@ -23,7 +23,7 @@ client.login(token);
 client.on("ready", () => {
   let name = client.user.tag;
   console.info(chalk.hex(hexString(name)).underline(`Logged in as ${name}\n`));
-  require("./utils/usage")(validInput);
+  require("./utils/usage")(validInput, alternativeInput);
 });
 
 client.on("message", message => {
