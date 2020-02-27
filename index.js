@@ -10,6 +10,7 @@ const hexString = require("./utils/hexString");
 const processMessage = require("./utils/processMessage");
 /* Configuration files */
 const validInput = require("./data/validInput.json");
+const alternativeInput = require("./data/alternativeInput.json");
 
 client.login(token);
 
@@ -31,8 +32,11 @@ client.on("message", message => {
     let userName = message.member.user.tag;
     let userColor = hexString(userName);
     let repeated = parseInt(msg["repeated"]);
-    let userInput = validInput[msg["key"]];
-    // log user input message
+    // userInput now maps directly to proper key, no
+    // more altKey and lookup tables
+    let userInput = msg["key"];
+    // log user input message, if we log after do-while loop
+    // the repeated value will not reflect initial input
     console.log(
       chalk.hex(userColor).bold(userName) +
         "=> " +
