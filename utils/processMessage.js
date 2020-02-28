@@ -9,6 +9,7 @@ const inputs = require("../data/inputs");
  * @return {Object} An object containing command and repeated count.
  *
  * TODO: Add functionality to slice a sentence.
+ * TODO: Add
  * TODO: Restrict repeat functionality.
  */
 const processMessage = message => {
@@ -16,10 +17,11 @@ const processMessage = message => {
   let key = null;
   let msg = message.content;
   //query different set of keys
+  let priorityKeys = inputs["priorityKeys"];
   let actionKeys = inputs["actionKeys"];
   let directionalKeys = inputs["directionalKeys"];
-  let priorityKeys = inputs["priorityKeys"];
   let functionalKeys = inputs["functionalKeys"];
+  let remainingKeys = { ...actionKeys, ...directionalKeys, ...functionalKeys };
   // repeat command if user input has a numeric attached
   // e.g. 'up9' should repeat 'up' 9 times.
   let repeated = parseInt(msg.slice(-1)) ? parseInt(msg.slice(-1)) : 0;
@@ -36,9 +38,10 @@ const processMessage = message => {
   //iterate valid input and set key,
   //valid keys are not case sensitive and must be set to lowercase.
   msg = msg.toLowerCase();
-  for (input in directionalKeys) {
+  for (input in remainingKeys) {
     if (msg === input) {
-      key = directionalKeys[input];
+      console.log();
+      key = remainingKeys[input];
       return { key, repeated };
     }
   }

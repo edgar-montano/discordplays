@@ -10,3 +10,4 @@
 - [x] add alternative keys allowing for priority input (place before msg.toLowerCase())
 - [ ] place multi-key inputs, for more complex functionality, such as saving.
 - [x] add client.on error event handler
+- [x] rewrite usage and processMessage to accomodate new inputs merged file.
