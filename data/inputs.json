@@ -1,0 +1,30 @@
+{
+  "priorityKeys": {
+    "W": "up",
+    "D": "right",
+    "S": "down",
+    "A": "left"
+  },
+  "directionalKeys": {
+    "u": "up",
+    "up": "up",
+    "l": "left",
+    "left": "left",
+    "r": "right",
+    "right": "right",
+    "d": "down",
+    "down": "down"
+  },
+  "actionKeys": {
+    "s": "enter",
+    "start": "enter",
+    "a": "a",
+    "b": "b",
+    "z": "z",
+    "x": "x",
+    "enter": "enter"
+  },
+  "functionalKeys": {
+    "save": ["shift", "f1"]
+  }
+}
