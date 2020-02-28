@@ -9,9 +9,7 @@ const client = new Discord.Client();
 const hexString = require("./utils/hexString");
 const processMessage = require("./utils/processMessage");
 /* Configuration files */
-const validInput = require("./data/validInput.json");
-const alternativeInput = require("./data/alternativeInput.json");
-
+const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
 
 /**
@@ -23,17 +21,10 @@ client.login(token).catch(error => console.error("Invalid token passed"));
 client.on("ready", () => {
   let name = client.user.tag;
   console.info(chalk.hex(hexString(name)).underline(`Logged in as ${name}\n`));
-  require("./utils/usage")(validInput, alternativeInput);
-  // const generalChannel = client.channels.find(
-  //   channel => channel.name === "general"
-  // );
+  const usage = require("./utils/usage")(inputs);
   const channel = client.channels.get(process.env.CHANNEL);
   if (channel) {
-    channel.send(`Welcome, I am ${client.user.tag}! Shall we play a game?
-    \nValid inputs: \n\t__Case Sensitive__: **${Object.keys(
-      alternativeInput
-    ).join(", ")}**
-    \n\t__Case Insensitive__: **${Object.keys(validInput).join(", ")}**`);
+    channel.send(`Welcome, I am **${client.user.tag}!}**\n\t${usage}`);
   }
 });
 

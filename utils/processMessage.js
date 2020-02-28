@@ -1,5 +1,4 @@
-const validInput = require("../data/validInput.json");
-const alternativeInput = require("../data/alternativeInput.json");
+const inputs = require("../data/inputs");
 
 /**
  * Processes a user message, determines what command the user
@@ -16,6 +15,11 @@ const processMessage = message => {
   // key is the initial value we will return
   let key = null;
   let msg = message.content;
+  //query different set of keys
+  let actionKeys = inputs["actionKeys"];
+  let directionalKeys = inputs["directionalKeys"];
+  let priorityKeys = inputs["priorityKeys"];
+  let functionalKeys = inputs["functionalKeys"];
   // repeat command if user input has a numeric attached
   // e.g. 'up9' should repeat 'up' 9 times.
   let repeated = parseInt(msg.slice(-1)) ? parseInt(msg.slice(-1)) : 0;
@@ -23,18 +27,18 @@ const processMessage = message => {
   if (repeated !== 0) msg = msg.slice(0, -1);
   //iterate through alternative keys first since they are case
   //sensitive.
-  for (input in alternativeInput) {
+  for (input in priorityKeys) {
     if (msg === input) {
-      key = alternativeInput[input];
+      key = priorityKeys[input];
       return { key, repeated };
     }
   }
   //iterate valid input and set key,
   //valid keys are not case sensitive and must be set to lowercase.
   msg = msg.toLowerCase();
-  for (input in validInput) {
+  for (input in directionalKeys) {
     if (msg === input) {
-      key = validInput[input];
+      key = directionalKeys[input];
       return { key, repeated };
     }
   }

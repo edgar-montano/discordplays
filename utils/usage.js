@@ -1,14 +1,13 @@
 const chalk = require("chalk");
 const log = console.log;
 
-const usage = (validKeys, alternativeKeys) => {
+const usage = inputs => {
   const usage = `The following commands are available: \n
-  priority keys are: ${Object.keys(alternativeKeys).join(", ")}
-  noraml keys are: ${Object.keys(validKeys).join(", ")}
+  priority keys are: ${Object.keys(inputs["priorityKeys"]).join(", ")}
+  directional keys are: ${Object.keys(inputs["directionalKeys"]).join(", ")}
+  action keys are: ${Object.keys(inputs["actionKeys"]).join(", ")}
   `;
-  log(chalk.yellowBright("The following commands are available:"));
-  log("\t" + Object.keys(alternativeKeys).join(", "));
-  log("\t" + chalk.green(Object.keys(validKeys).join(", ")));
+  log(chalk.bold(usage));
   return usage;
 };
 
