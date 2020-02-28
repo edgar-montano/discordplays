@@ -12,7 +12,7 @@ const processMessage = require("./utils/processMessage");
 const validInput = require("./data/validInput.json");
 const alternativeInput = require("./data/alternativeInput.json");
 
-client.login(token);
+client.login(token).catch(error => console.error("Invalid token passed"));
 
 /**
  * Ready event occurs when we first login
@@ -37,6 +37,16 @@ client.on("ready", () => {
   }
 });
 
+/**
+ * Handle error event.
+ */
+client.on("error", error =>
+  console.error(chalk.red(`An error has occured ${error}`))
+);
+/**
+ * Process each message, if message contains input,
+ * simulate the input.
+ */
 client.on("message", message => {
   let msg = processMessage(message);
   if (msg !== null) {

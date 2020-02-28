@@ -9,4 +9,4 @@
 - [ ] restrict repeated keys allowed
 - [x] add alternative keys allowing for priority input (place before msg.toLowerCase())
 - [ ] place multi-key inputs, for more complex functionality, such as saving.
-- [ ] add client.on error event handler
+- [x] add client.on error event handler
