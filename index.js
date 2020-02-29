@@ -8,6 +8,7 @@ const token = require("./utils/auth")();
 const client = new Discord.Client();
 const hexString = require("./utils/hexString");
 const processMessage = require("./utils/processMessage");
+const processKeys = require("./utils/processKeys");
 /* Configuration files */
 const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
@@ -44,6 +45,7 @@ client.on("message", message => {
     let userName = message.member.user.tag;
     let userColor = hexString(userName);
     let repeated = parseInt(msg["repeated"]);
+    let multiKey = msg["multiKey"];
     // userInput now maps directly to proper key, no
     // more altKey and lookup tables
     let userInput = msg["key"];
@@ -58,10 +60,7 @@ client.on("message", message => {
         " @ " +
         chalk.magenta(message.createdAt)
     );
-    //execute keytap at least once
-    do {
-      robot.keyTap(userInput);
-      repeated--;
-    } while (repeated > 0);
+
+    processKeys(userInput, repeated, multiKey);
   }
 });
