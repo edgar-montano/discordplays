@@ -24,7 +24,7 @@ client.on("ready", () => {
   const usage = require("./utils/usage")(inputs);
   const channel = client.channels.get(process.env.CHANNEL);
   if (channel) {
-    channel.send(`Welcome, I am **${client.user.tag}!}**\n\t${usage}`);
+    channel.send(`Welcome, I am **${client.user.tag}!**\n\t${usage}`);
   }
 });
 

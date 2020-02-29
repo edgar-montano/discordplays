@@ -1,4 +1,5 @@
 const inputs = require("../data/inputs");
+const processMultiKeys = require("./processMultiKeys");
 
 /**
  * Processes a user message, determines what command the user
@@ -40,7 +41,6 @@ const processMessage = message => {
   msg = msg.toLowerCase();
   for (input in remainingKeys) {
     if (msg === input) {
-      console.log();
       key = remainingKeys[input];
       return { key, repeated };
     }
