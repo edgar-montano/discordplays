@@ -11,3 +11,4 @@ All notable changes will be commited and reflected here.
 - Alternative keys allowed (W,A,S,D) overloaded with case-insensitive keys, alt keys given proirity.
 - now sends message on login if CHANNEL is set in .env file
 - merged json data files so inputs are contained within one file now.
+- can now process multiKey inputs for functionality such as save.

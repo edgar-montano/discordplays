@@ -1,8 +1,8 @@
-let bot = require("robotjs");
+const processSingleKey = require("../utils/processSingleKey");
 
-const testKey = key => {
-  bot.keyTap(key);
-  console.log(`Attempting to input key: ${key}`);
+const testKey = (key, repeated) => {
+  processSingleKey(key, repeated);
+  console.log(`Attempting to input key: ${key} ${repeated} times`);
 };
 
 module.exports = testKey;

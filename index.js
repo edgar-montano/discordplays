@@ -9,6 +9,7 @@ const client = new Discord.Client();
 const hexString = require("./utils/hexString");
 const processMessage = require("./utils/processMessage");
 const processKeys = require("./utils/processKeys");
+
 /* Configuration files */
 const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
@@ -40,6 +41,7 @@ client.on("error", error =>
  * simulate the input.
  */
 client.on("message", message => {
+  if (message.author.bot) return; //prevents bot-ception
   let msg = processMessage(message);
   if (msg !== null) {
     let userName = message.member.user.tag;

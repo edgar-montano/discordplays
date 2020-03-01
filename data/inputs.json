@@ -16,10 +16,9 @@
     "down": "down"
   },
   "actionKeys": {
-    "s": "enter",
     "start": "enter",
-    "a": "a",
-    "b": "b",
+    "a": "x",
+    "b": "z",
     "z": "z",
     "x": "x",
     "enter": "enter"

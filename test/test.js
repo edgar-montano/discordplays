@@ -1,11 +1,10 @@
-const validKeys = require("../data/validInput.json");
-
-// test usage
-console.log("Testing usage...");
-require("./testUsage")(validKeys);
-console.log("[*] Usage test complete");
-
-//test a specific key or key
-console.log("Testing keyboard input");
-require("./testKeys")("enter");
+//test a single key input, repeated
+console.log("[!] Testing keyboard input");
+require("./testKeys")("up", 5);
 console.log("[*] Keyboard input test complete");
+
+//test multi key functions, such as quick save.
+console.log("[!] Testing multiKey input");
+require("./testMultiKey")(["shift", "f1"]);
+require("./testMultiKey")(["down", "up"]);
+console.log("[*] Testing multiKey complete");
