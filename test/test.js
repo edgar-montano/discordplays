@@ -8,3 +8,7 @@ console.log("[!] Testing multiKey input");
 require("./testMultiKey")(["shift", "f1"]);
 require("./testMultiKey")(["down", "up"]);
 console.log("[*] Testing multiKey complete");
+
+console.log("[!] Testing resetSystemQueue");
+require("./testSystemQueue")();
+console.log("[*] Testing resetSystemQueue complete");

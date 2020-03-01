@@ -9,11 +9,15 @@ const client = new Discord.Client();
 const hexString = require("./utils/hexString");
 const processMessage = require("./utils/processMessage");
 const processKeys = require("./utils/processKeys");
+const resetSystemQueue = require("./utils/resetSystemQueue");
 
 /* Configuration files */
 const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
 
+/* System Queue */
+let systemOrder = false; //no system order = anarchy mode
+let systemQueue = resetSystemQueue();
 /**
  * Ready event occurs when we first login
  * Simply display color coded username, and usage (utils/usage.js)
@@ -53,12 +57,13 @@ client.on("message", message => {
     let userInput = msg["key"];
     // log user input message, if we log after do-while loop
     // the repeated value will not reflect initial input
+    //NOTE: REMOTE SLICE BELOW AFTER DEMO
     console.log(
-      chalk.hex(userColor).bold(userName) +
+      chalk.hex(userColor).bold(userName.slice(0, 4)) +
         "=> " +
         chalk.yellow(userInput) +
         " repeated:" +
-        chalk.magentaBright(repeated) +
+        chalk.green(repeated) +
         " @ " +
         chalk.magenta(message.createdAt)
     );
