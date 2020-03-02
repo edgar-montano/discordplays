@@ -1,6 +1,6 @@
-const resetSystemQueue = require("../utils/resetSystemQueue");
-
-module.exports = testSystemQueue = () => {
-  let systemQueue = resetSystemQueue();
-  return systemQueue;
+const resetSystemQueue = require("../systemqueue/resetSystemQueue");
+const calculateSystemQueue = require("../systemqueue/calculateSystemQueue");
+module.exports = testSystemQueue = systemQueue => {
+  let ret = calculateSystemQueue(systemQueue);
+  return ret;
 };

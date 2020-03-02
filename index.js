@@ -9,14 +9,14 @@ const client = new Discord.Client();
 const hexString = require("./utils/hexString");
 const processMessage = require("./utils/processMessage");
 const processKeys = require("./utils/processKeys");
-const resetSystemQueue = require("./utils/resetSystemQueue");
+const resetSystemQueue = require("./systemqueue/resetSystemQueue");
 
 /* Configuration files */
 const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
 
 /* System Queue */
-let systemOrder = false; //no system order = anarchy mode
+let systemMode = { anarchy: 1, democracy: 1 }; //no system order = anarchy mode
 let systemQueue = resetSystemQueue();
 /**
  * Ready event occurs when we first login
