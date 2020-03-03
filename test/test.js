@@ -11,9 +11,9 @@ console.log(
 );
 console.log("[*] Testing calculateSystemQueue Complete");
 
-// console.log("[!] Testing resetSystemQueue");
-// require("./testSystemQueue")({up:1000});
-// console.log("[*] Testing resetSystemQueue complete");
+console.log("[!] Testing resetSystemQueue");
+console.log(require("../systemqueue/resetSystemQueue")());
+console.log("[*] Testing resetSystemQueue complete");
 
 //test a single key input, repeated
 console.log("[!] Testing keyboard input");

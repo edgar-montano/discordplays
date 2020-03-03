@@ -9,15 +9,19 @@ const client = new Discord.Client();
 const hexString = require("./utils/hexString");
 const processMessage = require("./utils/processMessage");
 const processKeys = require("./utils/processKeys");
-const resetSystemQueue = require("./systemqueue/resetSystemQueue");
 
 /* Configuration files */
 const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
 
 /* System Queue */
-let systemMode = { anarchy: 1, democracy: 1 }; //no system order = anarchy mode
+const calculateSystemQueue = require("./systemqueue/calculateSystemQueue");
+const compareSystemQueue = require("./systemqueue/compareSystemQueue");
+const resetSystemQueue = require("./systemqueue/resetSystemQueue");
+
+let systemMode = { anarchy: 1, democracy: 0 }; //no system order = anarchy mode
 let systemQueue = resetSystemQueue();
+let checkQueue = 0; //checkQueue periodically
 /**
  * Ready event occurs when we first login
  * Simply display color coded username, and usage (utils/usage.js)
@@ -50,11 +54,11 @@ client.on("message", message => {
   if (msg !== null) {
     let userName = message.member.user.tag;
     let userColor = hexString(userName);
-    let repeated = parseInt(msg["repeated"]);
-    let multiKey = msg["multiKey"];
+    let repeated = parseInt(msg["repeated"]); //number
+    let multiKey = msg["multiKey"]; // boolean
     // userInput now maps directly to proper key, no
     // more altKey and lookup tables
-    let userInput = msg["key"];
+    let userInput = msg["key"]; // string/char of key
     // log user input message, if we log after do-while loop
     // the repeated value will not reflect initial input
     //NOTE: REMOTE SLICE BELOW AFTER DEMO
@@ -69,5 +73,13 @@ client.on("message", message => {
     );
 
     processKeys(userInput, repeated, multiKey);
+
+    //update system queue
+    if (checkQueue > 10) {
+      checkQueue = 0;
+      console.log(systemQueue);
+    }
+    systemQueue[userInput]++;
+    checkQueue++;
   }
 });
