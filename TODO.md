@@ -11,3 +11,5 @@
 - [x] place multi-key inputs, for more complex functionality, such as saving.
 - [x] add client.on error event handler
 - [x] rewrite usage and processMessage to accomodate new inputs merged file.
+- [ ] add latency test mode
+- [ ] add system queue delayed processing keys

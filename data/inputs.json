@@ -1,10 +1,5 @@
 {
-  "priorityKeys": {
-    "W": "up",
-    "D": "right",
-    "S": "down",
-    "A": "left"
-  },
+  "priorityKeys": {},
   "directionalKeys": {
     "u": "up",
     "up": "up",

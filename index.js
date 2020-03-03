@@ -1,6 +1,6 @@
 /* Required Libraries  */
 const robot = require("robotjs");
-const chalk = require("chalk");
+const chalk = require("chalk"); //chalk depedency will be deprecated soon
 const hex = require("string-hex");
 const Discord = require("discord.js");
 /* Utilities and helper functions */
@@ -20,8 +20,9 @@ const compareSystemQueue = require("./systemqueue/compareSystemQueue");
 const resetSystemQueue = require("./systemqueue/resetSystemQueue");
 
 let systemMode = { anarchy: 1, democracy: 0 }; //no system order = anarchy mode
-let systemQueue = resetSystemQueue();
-let checkQueue = 0; //checkQueue periodically
+let topInput = null; //topInput gets processed from systemQueue most frequent input value
+let systemQueue = resetSystemQueue(); //reinitialize the values to 0
+let checkQueue = 0; //checkqueue is used to minimize the calls on when to check the queue.
 /**
  * Ready event occurs when we first login
  * Simply display color coded username, and usage (utils/usage.js)
@@ -75,9 +76,9 @@ client.on("message", message => {
     processKeys(userInput, repeated, multiKey);
 
     //update system queue
-    if (checkQueue > 10) {
+    if (checkQueue > 500) {
       checkQueue = 0;
-      console.log(systemQueue);
+      // console.log(systemQueue);
     }
     systemQueue[userInput]++;
     checkQueue++;
