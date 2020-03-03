@@ -9,6 +9,8 @@ const client = new Discord.Client();
 const hexString = require("./utils/hexString");
 const processMessage = require("./utils/processMessage");
 const processKeys = require("./utils/processKeys");
+/* Debug */
+const { performance } = require("perf_hooks");
 
 /* Configuration files */
 const inputs = require("./data/inputs.json");
@@ -50,6 +52,9 @@ client.on("error", error =>
  * simulate the input.
  */
 client.on("message", message => {
+  //TIMING LATENCY FUNCTIONALITY
+  let timeStart = performance.now();
+
   if (message.author.bot) return; //prevents bot-ception
   let msg = processMessage(message);
   if (msg !== null) {
@@ -75,12 +80,18 @@ client.on("message", message => {
 
     processKeys(userInput, repeated, multiKey);
 
-    //update system queue
+    // update system queue
     if (checkQueue > 500) {
       checkQueue = 0;
       // console.log(systemQueue);
     }
     systemQueue[userInput]++;
     checkQueue++;
+
+    //TIMER END FUNCTIONALITY
+    let timeEnd = performance.now();
+    console.log(
+      `\t It took that message ${Math.floor(timeEnd - timeStart)} ms`
+    );
   }
 });
