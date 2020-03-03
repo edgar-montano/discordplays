@@ -2,7 +2,7 @@
 
 Inspired by TwitchPlays, DiscordPlays simulates keyboard inputs and events. DiscordPlays attempts to emulate "crowdplay" by parsing commands sent by users through Discord's Chat API. The commands are parsed by a bot within the chat, that is also responsible for relaying the commands into the game.
 
-The original TwitchPlays bot simply parsed the commands and relayed it into an external tool such as `xdotool` however, DiscordPlays relays parsed commands natively, in addition the TwitchPlays bot was divideed into two separte programs, one designed in python to relay the commands, the other in JavaScript, DiscordPlays is written 100% in JavaScript using Node.js.
+The original TwitchPlays bot simply parsed the commands and relayed it into an external tool such as `xdotool` however, DiscordPlays relays parsed commands natively, in addition the TwitchPlays bot was divided into two separate programs, one designed in python to relay the commands, the other in JavaScript, DiscordPlays is written 100% in JavaScript using Node.js.
 
 ![](discordplays.gif)
 
