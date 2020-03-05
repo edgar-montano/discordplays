@@ -9,9 +9,6 @@ const processMultiKeys = require("./processMultiKeys");
  * @param {String} message - User message to process
  * @return {Object} An object containing command and repeated count.
  *
- * TODO: Add functionality to slice a sentence.
- * TODO: Add
- * TODO: Restrict repeat functionality.
  */
 const processMessage = message => {
   // key is the initial value we will return

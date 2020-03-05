@@ -103,7 +103,6 @@ client.on("message", message => {
         );
         processKeys(topInput[0], 0, false);
       }
-      // console.log(systemQueue);
       systemQueue = resetSystemQueue();
     }
 
