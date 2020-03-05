@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/edgar-montano/discordplays#readme",
   "dependencies": {
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.8.19",
     "chalk": "^3.0.0",
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
