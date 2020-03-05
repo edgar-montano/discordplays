@@ -16,23 +16,17 @@ const processMultiKeys = require("./processMultiKeys");
 const processMessage = message => {
   // key is the initial value we will return
   let key = null;
-  let msg = message.content;
+  let msg = message;
+  let repeated = 0;
   let multiKey = false;
   //query different set of keys
   let priorityKeys = inputs["priorityKeys"];
   let functionalKeys = inputs["functionalKeys"];
   let remainingKeys = { ...inputs["actionKeys"], ...inputs["directionalKeys"] };
-  // repeat command if user input has a numeric attached
-  // e.g. 'up9' should repeat 'up' 9 times.
-  let repeated = parseInt(msg.slice(-1)) ? parseInt(msg.slice(-1)) : 0;
-  // remove numeric value from msg
-  if (repeated !== 0) msg = msg.slice(0, -1);
-  //iterate through alternative keys first since they are case
-  //sensitive.
+
   for (input in priorityKeys) {
     if (msg === input) {
       key = priorityKeys[input];
-      return { key, repeated, multiKey };
     }
   }
   // functional keys should not be repeated
@@ -50,11 +44,19 @@ const processMessage = message => {
   for (input in remainingKeys) {
     if (msg === input) {
       key = remainingKeys[input];
-      return { key, repeated, multiKey };
     }
   }
-  //return null if not found, otherwise return obj with key and repeat value
-  return null;
+
+  if (key) {
+    // repeat command if user input has a numeric attached
+    // e.g. 'up9' should repeat 'up' 9 times.
+    repeated = parseInt(msg.slice(-1)) ? parseInt(msg.slice(-1)) : 0;
+    // remove numeric value from msg
+    if (repeated !== 0) msg = msg.slice(0, -1);
+    //iterate through alternative keys first since they are case
+    //sensitive.
+    return { key, repeated, multiKey };
+  } else return null; //return null if not found, otherwise return obj with key and repeat value
 };
 
 module.exports = processMessage;

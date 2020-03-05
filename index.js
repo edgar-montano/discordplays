@@ -20,6 +20,11 @@ client.login(token).catch(error => console.error("Invalid token passed"));
 const calculateSystemQueue = require("./systemqueue/calculateSystemQueue");
 const compareSystemQueue = require("./systemqueue/compareSystemQueue");
 const resetSystemQueue = require("./systemqueue/resetSystemQueue");
+const calculateSystemMode = require("./systemqueue/calculateSystemMode");
+
+// NOTE: Please remove randomInput after initial test. Random Input
+// is only suppose to inject input to help seed latency test.
+const randomInput = ["up", "down", "left", "right", "a", "b", "enter"];
 
 let systemMode = { anarchy: 1, democracy: 0 }; //no system order = anarchy mode
 let topInput = null; //topInput gets processed from systemQueue most frequent input value
@@ -28,7 +33,6 @@ let checkQueue = 0; //checkqueue is used to minimize the calls on when to check 
 /**
  * Ready event occurs when we first login
  * Simply display color coded username, and usage (utils/usage.js)
- * TODO: Send message announcing list of commands when first logged in.
  * */
 
 client.on("ready", () => {
@@ -47,6 +51,7 @@ client.on("ready", () => {
 client.on("error", error =>
   console.error(chalk.red(`An error has occured ${error}`))
 );
+
 /**
  * Process each message, if message contains input,
  * simulate the input.
@@ -54,39 +59,63 @@ client.on("error", error =>
 client.on("message", message => {
   //TIMING LATENCY FUNCTIONALITY
   let timeStart = performance.now();
+  // check if the message is trying to change system mode.
+  if (message.content.includes("anarchy")) {
+    systemMode["anarchy"]++;
+  } else if (message.content.includes("democracy")) {
+    systemMode["democracy"]++;
+  }
 
-  if (message.author.bot) return; //prevents bot-ception
-  let msg = processMessage(message);
+  // if (message.author.bot) return;
+  let msg = processMessage(message.content);
   if (msg !== null) {
     let userName = message.member.user.tag;
     let userColor = hexString(userName);
     let repeated = parseInt(msg["repeated"]); //number
     let multiKey = msg["multiKey"]; // boolean
-    // userInput now maps directly to proper key, no
-    // more altKey and lookup tables
     let userInput = msg["key"]; // string/char of key
-    // log user input message, if we log after do-while loop
-    // the repeated value will not reflect initial input
-    //NOTE: REMOTE SLICE BELOW AFTER DEMO
-    console.log(
-      chalk.hex(userColor).bold(userName.slice(0, 4)) +
-        "=> " +
-        chalk.yellow(userInput) +
-        " repeated:" +
-        chalk.green(repeated) +
-        " @ " +
-        chalk.magenta(message.createdAt)
-    );
-
-    processKeys(userInput, repeated, multiKey);
-
-    // update system queue
-    if (checkQueue > 500) {
-      checkQueue = 0;
-      // console.log(systemQueue);
-    }
+    let activeMode = calculateSystemMode(systemMode);
     systemQueue[userInput]++;
+
+    // update system queue, get top input after
+    // every 20 inputs. This used to be calculated based on
+    // time.
+    if (checkQueue > 10) {
+      checkQueue = 0;
+      message.channel.send("Beep boop. I think its time to troll.");
+      message.channel.send(
+        randomInput[Math.floor(Math.random() * randomInput.length)]
+      );
+      topInput = calculateSystemQueue(systemQueue)[0];
+
+      //at this point process the input if in democracy mode,
+      systemQueue = resetSystemQueue();
+    }
     checkQueue++;
+    //determine how to input
+    if (activeMode === "anarchy") {
+      processKeys(userInput, repeated, multiKey);
+      //NOTE: REMOTE SLICE BELOW AFTER DEMO
+      console.log(
+        chalk.hex(userColor).bold(userName.slice(0, 4)) +
+          "=> " +
+          chalk.yellow(userInput) +
+          " repeated:" +
+          chalk.green(repeated) +
+          " @ " +
+          chalk.magenta(message.createdAt)
+      );
+    } else {
+      message.channel.send(
+        "Democracy has been enacted! Vote for your inputs you pleebs"
+      );
+
+      if (topInput == null) topInput = calculateSystemQueue(systemQueue)[0];
+      console.log(`The input that would be processed is ${topInput}`);
+      console.log(systemMode);
+      // userInput = processMessage(topInput[0]);
+      processKeys(topInput[0], 0, false);
+    }
 
     //TIMER END FUNCTIONALITY
     let timeEnd = performance.now();
