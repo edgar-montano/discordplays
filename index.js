@@ -11,6 +11,7 @@ const processMessage = require("./utils/processMessage");
 const processKeys = require("./utils/processKeys");
 /* Debug */
 const { performance } = require("perf_hooks");
+const DEBUG = true;
 
 /* Configuration files */
 const inputs = require("./data/inputs.json");
@@ -30,6 +31,7 @@ let systemMode = { anarchy: 1, democracy: 0 }; //no system order = anarchy mode
 let topInput = null; //topInput gets processed from systemQueue most frequent input value
 let systemQueue = resetSystemQueue(); //reinitialize the values to 0
 let checkQueue = 0; //checkqueue is used to minimize the calls on when to check the queue.
+let votes = 0;
 /**
  * Ready event occurs when we first login
  * Simply display color coded username, and usage (utils/usage.js)
@@ -59,15 +61,21 @@ client.on("error", error =>
 client.on("message", message => {
   //TIMING LATENCY FUNCTIONALITY
   let timeStart = performance.now();
+
   // check if the message is trying to change system mode.
+  // if the message does not contain a system mode command,
+  //simply process it
+  let msg = null;
   if (message.content.includes("anarchy")) {
     systemMode["anarchy"]++;
   } else if (message.content.includes("democracy")) {
     systemMode["democracy"]++;
+  } else {
+    msg = processMessage(message.content);
   }
 
   // if (message.author.bot) return;
-  let msg = processMessage(message.content);
+
   if (msg !== null) {
     let userName = message.member.user.tag;
     let userColor = hexString(userName);
@@ -77,19 +85,35 @@ client.on("message", message => {
     let activeMode = calculateSystemMode(systemMode);
     systemQueue[userInput]++;
 
-    // update system queue, get top input after
-    // every 20 inputs. This used to be calculated based on
-    // time.
-    if (checkQueue > 10) {
+    //check every 11 votes
+    //also check if we are in democracy mode.
+    if (votes > 11) {
+      votes = 0;
+      topInput = calculateSystemQueue(systemQueue)[0];
+      if (activeMode === "democracy") {
+        message.channel.send(
+          "You have voted, and your votes have been tallied"
+        );
+        message.channel.send(
+          "The most voted input has been: " +
+            topInput[0] +
+            " with a total of " +
+            topInput[1] +
+            " votes!"
+        );
+        processKeys(topInput[0], 0, false);
+      }
+      // console.log(systemQueue);
+      systemQueue = resetSystemQueue();
+    }
+
+    // This is to seed more input for demo purposes.
+    if (checkQueue > 10 && DEBUG) {
       checkQueue = 0;
       message.channel.send("Beep boop. I think its time to troll.");
       message.channel.send(
         randomInput[Math.floor(Math.random() * randomInput.length)]
       );
-      topInput = calculateSystemQueue(systemQueue)[0];
-
-      //at this point process the input if in democracy mode,
-      systemQueue = resetSystemQueue();
     }
     checkQueue++;
     //determine how to input
@@ -105,22 +129,13 @@ client.on("message", message => {
           " @ " +
           chalk.magenta(message.createdAt)
       );
-    } else {
-      message.channel.send(
-        "Democracy has been enacted! Vote for your inputs you pleebs"
-      );
-
-      if (topInput == null) topInput = calculateSystemQueue(systemQueue)[0];
-      console.log(`The input that would be processed is ${topInput}`);
-      console.log(systemMode);
-      // userInput = processMessage(topInput[0]);
-      processKeys(topInput[0], 0, false);
     }
 
     //TIMER END FUNCTIONALITY
     let timeEnd = performance.now();
-    console.log(
-      `\t It took that message ${Math.floor(timeEnd - timeStart)} ms`
-    );
+    let totalTime = timeEnd - timeStart;
+    votes++;
+    if (activeMode === "anarchy")
+      console.log(`\t It took that message ${Math.floor(totalTime)} ms`);
   }
 });
