@@ -25,3 +25,7 @@ console.log("[!] Testing multiKey input");
 require("./testMultiKey")(["shift", "f1"]);
 require("./testMultiKey")(["down", "up"]);
 console.log("[*] Testing multiKey complete");
+
+console.log("[!] Testing checkRepeatValue");
+require("./testCheckRepeatValue")(["up", "down9", "a1", "a0", "start"]);
+console.log("[*] Testing checkRepeatValue");

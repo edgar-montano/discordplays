@@ -1,5 +1,6 @@
 const inputs = require("../data/inputs");
 const processMultiKeys = require("./processMultiKeys");
+const checkRepeatValue = require("../utils/checkRepeatValue");
 
 /**
  * Processes a user message, determines what command the user
@@ -15,6 +16,16 @@ const processMessage = message => {
   let key = null;
   let msg = message;
   let repeated = 0;
+  if (checkRepeatValue(msg)) {
+    // repeat command if user input has a numeric attached
+    // e.g. 'up9' should repeat 'up' 9 times.
+    repeated = parseInt(msg.slice(-1)) ? parseInt(msg.slice(-1)) : 0;
+    // remove numeric value from msg
+    if (repeated !== 0) msg = msg.slice(0, -1);
+    //iterate through alternative keys first since they are case
+    //sensitive.
+  }
+
   let multiKey = false;
   //query different set of keys
   let priorityKeys = inputs["priorityKeys"];
@@ -45,13 +56,6 @@ const processMessage = message => {
   }
 
   if (key) {
-    // repeat command if user input has a numeric attached
-    // e.g. 'up9' should repeat 'up' 9 times.
-    repeated = parseInt(msg.slice(-1)) ? parseInt(msg.slice(-1)) : 0;
-    // remove numeric value from msg
-    if (repeated !== 0) msg = msg.slice(0, -1);
-    //iterate through alternative keys first since they are case
-    //sensitive.
     return { key, repeated, multiKey };
   } else return null; //return null if not found, otherwise return obj with key and repeat value
 };
