@@ -49,7 +49,6 @@ const myScreen = new MyScreen(screen, "Discord Plays");
 client.on("ready", () => {
   let name = client.user.tag;
   const usage = require("./utils/usage")(inputs);
-  // console.info(chalk.hex(hexString(name)).underline(`Logged in as ${name}\n`));
   myScreen.setTextBox(`\t\tLogged in as ${name}\n${usage}`);
   const channel = client.channels.get(process.env.CHANNEL);
   if (channel) {

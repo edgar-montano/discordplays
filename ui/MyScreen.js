@@ -82,7 +82,7 @@ class MyScreen {
    * @param {Number} democracy - number of votes for democracy
    * @param {Number} anarchy - number of votes for democracy
    */
-  systeModeUpdate(democracy, anarchy) {
+  systemModeUpdate(democracy, anarchy) {
     this.gauge.setData([democracy, anarchy]);
     this.render();
   }
