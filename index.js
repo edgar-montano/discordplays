@@ -12,14 +12,13 @@ const processKeys = require("./utils/processKeys");
 /* Debug */
 const { performance } = require("perf_hooks");
 const DEBUG = true;
-
 /* Configuration files */
 const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
 
 /* System Queue */
 const calculateSystemQueue = require("./systemqueue/calculateSystemQueue");
-const compareSystemQueue = require("./systemqueue/compareSystemQueue");
+// const compareSystemQueue = require("./systemqueue/compareSystemQueue");
 const resetSystemQueue = require("./systemqueue/resetSystemQueue");
 const calculateSystemMode = require("./systemqueue/calculateSystemMode");
 
@@ -32,6 +31,15 @@ let topInput = null; //topInput gets processed from systemQueue most frequent in
 let systemQueue = resetSystemQueue(); //reinitialize the values to 0
 let checkQueue = 0; //checkqueue is used to minimize the calls on when to check the queue.
 let votes = 0;
+
+/**
+ * UI setup, requires blessed grid and box setup
+ */
+const blessed = require("blessed");
+const contrib = require("blessed-contrib");
+let screen = blessed.screen({ smartCSR: true });
+screen.title = "Discord Plays";
+
 /**
  * Ready event occurs when we first login
  * Simply display color coded username, and usage (utils/usage.js)
@@ -45,6 +53,7 @@ client.on("ready", () => {
   if (channel) {
     channel.send(`Welcome, I am **${client.user.tag}!**\n\t${usage}`);
   }
+  screen.render();
 });
 
 /**
@@ -84,12 +93,17 @@ client.on("message", message => {
     let userInput = msg["key"]; // string/char of key
     let activeMode = calculateSystemMode(systemMode);
     systemQueue[userInput]++;
+    gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
 
     //check every 11 votes
     //also check if we are in democracy mode.
-    if (votes > 11) {
+    if (votes > 10) {
       votes = 0;
       topInput = calculateSystemQueue(systemQueue)[0];
+      //note calculate proper percent
+      donut.update([
+        { percent: topInput[1], label: topInput[0], color: "red" }
+      ]);
       if (activeMode === "democracy") {
         message.channel.send(
           "You have voted, and your votes have been tallied"
@@ -119,14 +133,26 @@ client.on("message", message => {
     if (activeMode === "anarchy") {
       processKeys(userInput, repeated, multiKey);
       //NOTE: REMOTE SLICE BELOW AFTER DEMO
-      console.log(
-        chalk.hex(userColor).bold(userName.slice(0, 4)) +
-          "=> " +
-          chalk.yellow(userInput) +
-          " repeated:" +
-          chalk.green(repeated) +
-          " @ " +
-          chalk.magenta(message.createdAt)
+      // console.log(
+      //   chalk.hex(userColor).bold(userName.slice(0, 4)) +
+      //     "=> " +
+      //     chalk.yellow(userInput) +
+      //     " repeated:" +
+      //     chalk.green(repeated) +
+      //     " @ " +
+      //     chalk.magenta(message.createdAt)
+      // );
+      log.log(
+        "{red-fg}" +
+          userName.slice(0, 5) +
+          "{/red-fg} => " +
+          userInput +
+          "  {green-fg}" +
+          repeated +
+          "{/green-fg} times @" +
+          "{yellow-fg}" +
+          message.createdAt +
+          "{/yellow-fg}"
       );
     }
 
@@ -137,4 +163,9 @@ client.on("message", message => {
     if (activeMode === "anarchy")
       console.log(`\t It took that message ${Math.floor(totalTime)} ms`);
   }
+  screen.render();
+});
+
+screen.key(["escape", "q", "C-c"], function(ch, key) {
+  return process.exit(0);
 });
