@@ -97,7 +97,7 @@ class MyScreen {
    * @return {Number} percentage - percentage of topInput/totalInput
    */
   calculatePercent(topInput, totalInputs) {
-    return (topInput / totalInputs) * 100;
+    return Math.floor((topInput / totalInputs) * 100);
   }
   /**
    * Call this after every action to update screen.

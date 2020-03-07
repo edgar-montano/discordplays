@@ -1,7 +1,7 @@
 /**
  * Calculate system queue for the most popular input.
  * @param{Object} systemQueue - Queue of all the inputs entered.
- * @return{Array} popularInput - An array of the most popular inputs.
+ * @return{Array} popularInput - An array [key, count] of the most popular inputs.
  */
 module.exports = calculateSystemQueue = systemQueue => {
   //this could later be scaled to calculate top 3 inputs,

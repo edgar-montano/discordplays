@@ -31,6 +31,7 @@ let topInput = null; //topInput gets processed from systemQueue most frequent in
 let systemQueue = resetSystemQueue(); //reinitialize the values to 0
 let checkQueue = 0; //checkqueue is used to minimize the calls on when to check the queue.
 let votes = 0;
+let totalInputs = 0;
 
 /**
  * UI setup, requires blessed grid and box setup
@@ -94,17 +95,22 @@ client.on("message", message => {
     let userInput = msg["key"]; // string/char of key
     let activeMode = calculateSystemMode(systemMode);
     systemQueue[userInput]++;
-    gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
+    totalInputs++;
+    // myScreen.gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
 
     //check every 11 votes
     //also check if we are in democracy mode.
     if (votes > 10) {
       votes = 0;
       topInput = calculateSystemQueue(systemQueue)[0];
-      //note calculate proper percent
-      donut.update([
-        { percent: topInput[1], label: topInput[0], color: "red" }
-      ]);
+      let topInputKey = topInput[0];
+      let topInputCount = topInput[1];
+
+      //calculate proper input and render to screen
+      myScreen.topInputUpdate(
+        myScreen.calculatePercent(topInputCount, totalInputs),
+        topInputKey
+      );
       if (activeMode === "democracy") {
         message.channel.send(
           "You have voted, and your votes have been tallied"
@@ -119,6 +125,7 @@ client.on("message", message => {
         processKeys(topInput[0], 0, false);
       }
       systemQueue = resetSystemQueue();
+      totalInputs = 0;
     }
 
     // This is to seed more input for demo purposes.
@@ -143,17 +150,14 @@ client.on("message", message => {
       //     " @ " +
       //     chalk.magenta(message.createdAt)
       // );
-      log.log(
+      myScreen.log(
         "{red-fg}" +
-          userName.slice(0, 5) +
+          userName.slice(0, 5).toUpperCase() +
           "{/red-fg} => " +
           userInput +
           "  {green-fg}" +
           repeated +
-          "{/green-fg} times @" +
-          "{yellow-fg}" +
-          message.createdAt +
-          "{/yellow-fg}"
+          "{/green-fg} times"
       );
     }
 
@@ -161,8 +165,8 @@ client.on("message", message => {
     let timeEnd = performance.now();
     let totalTime = timeEnd - timeStart;
     votes++;
-    if (activeMode === "anarchy")
-      console.log(`\t It took that message ${Math.floor(totalTime)} ms`);
+    if (DEBUG)
+      myScreen.log(`\t It took that message ${Math.floor(totalTime)} ms`);
   }
   screen.render();
 });
