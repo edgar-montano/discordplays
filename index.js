@@ -39,8 +39,7 @@ const blessed = require("blessed");
 const contrib = require("blessed-contrib");
 const MyScreen = require("./ui/MyScreen");
 let screen = blessed.screen({ smartCSR: true });
-screen.title = "Discord Plays";
-const myScreen = new MyScreen(screen, title);
+const myScreen = new MyScreen(screen, "Discord Plays");
 
 /**
  * Ready event occurs when we first login
@@ -49,8 +48,9 @@ const myScreen = new MyScreen(screen, title);
 
 client.on("ready", () => {
   let name = client.user.tag;
-  console.info(chalk.hex(hexString(name)).underline(`Logged in as ${name}\n`));
   const usage = require("./utils/usage")(inputs);
+  // console.info(chalk.hex(hexString(name)).underline(`Logged in as ${name}\n`));
+  myScreen.setTextBox(`\t\tLogged in as ${name}\n${usage}`);
   const channel = client.channels.get(process.env.CHANNEL);
   if (channel) {
     channel.send(`Welcome, I am **${client.user.tag}!**\n\t${usage}`);
