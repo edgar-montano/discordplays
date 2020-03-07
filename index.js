@@ -77,9 +77,9 @@ client.on("message", message => {
   //simply process it
   let msg = null;
   if (message.content.includes("anarchy")) {
-    systemMode["anarchy"]++;
+    myScreen.systemModeUpdate(systemMode["democracy"], ++systemMode["anarchy"]);
   } else if (message.content.includes("democracy")) {
-    systemMode["democracy"]++;
+    myScreen.systemModeUpdate(++systemMode["democracy"], systemMode["anarchy"]);
   } else {
     msg = processMessage(message.content);
   }
