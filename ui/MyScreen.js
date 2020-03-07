@@ -34,9 +34,23 @@ class MyScreen {
       tags: true,
       border: { type: "line", fg: "cyan" }
     });
+
+    //box to display inputs
+    this.box = this.grid.set(10, 0, 2, 12, blessed.box, {
+      content: "\t\tDiscord Plays\n\t\t edgar-montano"
+    });
     //we need to render to initialize screen
     this.screen.render();
   }
+  /**
+   * Sets the string of the text box on bottom widget.
+   * @param {String} msg - A string of the message to display in bottom widget text box.
+   */
+  setTextBox(msg) {
+    this.box.setContent(msg);
+    this.render();
+  }
+
   /**
    * Simply logs the message you wish to in the inputLog widget.
    * @param {String} msg - The message you wish to log.

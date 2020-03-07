@@ -37,8 +37,10 @@ let votes = 0;
  */
 const blessed = require("blessed");
 const contrib = require("blessed-contrib");
+const MyScreen = require("./ui/MyScreen");
 let screen = blessed.screen({ smartCSR: true });
 screen.title = "Discord Plays";
+const myScreen = new MyScreen(screen, title);
 
 /**
  * Ready event occurs when we first login

@@ -15,6 +15,7 @@ const testUI = msg => {
     myScreen.log(`LONGU\t\t{red-fg}${i}{/red-fg}\t\t${j} times`);
     myScreen.topInputUpdate(i, "up");
     myScreen.systeModeUpdate(i, 100 - i);
+    myScreen.setTextBox(`Discord plays ${i}`);
   }, 500);
   //   myScreen.render();
 };
