@@ -11,14 +11,14 @@ const processMessage = require("./utils/processMessage");
 const processKeys = require("./utils/processKeys");
 /* Debug */
 const { performance } = require("perf_hooks");
-const DEBUG = true;
+const DEBUG = false;
 /* Configuration files */
 const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
 
 /* System Queue */
 const calculateSystemQueue = require("./systemqueue/calculateSystemQueue");
-// const compareSystemQueue = require("./systemqueue/compareSystemQueue");
+const compareSystemQueue = require("./systemqueue/compareSystemQueue");
 const resetSystemQueue = require("./systemqueue/resetSystemQueue");
 const calculateSystemMode = require("./systemqueue/calculateSystemMode");
 
@@ -97,20 +97,26 @@ client.on("message", message => {
     systemQueue[userInput]++;
     totalInputs++;
     // myScreen.gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
+    topInput = calculateSystemQueue(systemQueue)[0];
+    let topInputKey = topInput[0];
+    let topInputCount = topInput[1];
+    let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
+    myScreen.topInputUpdate(topInputPercent, topInputKey);
 
     //check every 11 votes
     //also check if we are in democracy mode.
     if (votes > 10) {
-      votes = 0;
-      topInput = calculateSystemQueue(systemQueue)[0];
-      let topInputKey = topInput[0];
-      let topInputCount = topInput[1];
-
-      //calculate proper input and render to screen
-      myScreen.topInputUpdate(
-        myScreen.calculatePercent(topInputCount, totalInputs),
-        topInputKey
+      myScreen.log(
+        `{center}{yellow-fg}---------------------------{/yellow-fg}{/center}`
       );
+      myScreen.log(
+        `{center}{yellow-fg}System queue has been reset{/yellow-fg}{/center}`
+      );
+      myScreen.log(
+        `{center}{yellow-fg}---------------------------{/yellow-fg}{/center}`
+      );
+      votes = 0;
+      //calculate proper input and render to screen
       if (activeMode === "democracy") {
         message.channel.send(
           "You have voted, and your votes have been tallied"
@@ -122,6 +128,12 @@ client.on("message", message => {
             topInput[1] +
             " votes!"
         );
+        myScreen.log(
+          `{red-fg}VOTES ARE IN{/red-fg}:\t {green-fg}${topInputKey}{/green-fg} by ${topInputCount} votes`
+        );
+        myScreen.log(
+          "{yellow-fg}Polls are closed, please vote again for next input{/yellow-fg}"
+        );
         processKeys(topInput[0], 0, false);
       }
       systemQueue = resetSystemQueue();
@@ -129,7 +141,7 @@ client.on("message", message => {
     }
 
     // This is to seed more input for demo purposes.
-    if (checkQueue > 10 && DEBUG) {
+    if (checkQueue > 10) {
       checkQueue = 0;
       message.channel.send("Beep boop. I think its time to troll.");
       message.channel.send(
@@ -137,36 +149,27 @@ client.on("message", message => {
       );
     }
     checkQueue++;
-    //determine how to input
+
     if (activeMode === "anarchy") {
       processKeys(userInput, repeated, multiKey);
-      //NOTE: REMOTE SLICE BELOW AFTER DEMO
-      // console.log(
-      //   chalk.hex(userColor).bold(userName.slice(0, 4)) +
-      //     "=> " +
-      //     chalk.yellow(userInput) +
-      //     " repeated:" +
-      //     chalk.green(repeated) +
-      //     " @ " +
-      //     chalk.magenta(message.createdAt)
-      // );
+      //TIMER END FUNCTIONALITY
+      let timeEnd = performance.now();
+      let totalTime = Math.floor(timeEnd - timeStart);
       myScreen.log(
         "{red-fg}" +
-          userName.slice(0, 5).toUpperCase() +
+          userName.slice(0, 7).toUpperCase() +
           "{/red-fg} => " +
           userInput +
           "  {green-fg}" +
           repeated +
-          "{/green-fg} times"
+          "{/green-fg} times \t@ " +
+          totalTime +
+          "ms"
       );
     }
-
-    //TIMER END FUNCTIONALITY
-    let timeEnd = performance.now();
-    let totalTime = timeEnd - timeStart;
     votes++;
-    if (DEBUG)
-      myScreen.log(`\t It took that message ${Math.floor(totalTime)} ms`);
+    // if (DEBUG)
+    //   myScreen.log(`\t It took that message ${Math.floor(totalTime)} ms`);
   }
   screen.render();
 });

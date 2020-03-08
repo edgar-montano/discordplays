@@ -13,3 +13,4 @@
 - [x] rewrite usage and processMessage to accomodate new inputs merged file.
 - [ ] add latency test mode
 - [ ] add system queue delayed processing keys
+- [ ] implement compare top input to constantly update input meter

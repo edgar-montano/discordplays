@@ -6,6 +6,12 @@ The original TwitchPlays bot simply parsed the commands and relayed it into an e
 
 ![](discordplays.gif)
 
+## New User Interface
+
+DiscordPlays has been enhanced with a new user interface that displays more verbose information about the game being played, such as the top input, support for system mode updates, and more coherent log functionality, if you prefer the traditional stdout functionality (allows piping output to log file or another program) then you can grab a previous commit before the _ui_ update branch.
+
+![new user interface](newui.jpg)
+
 ## How to Install
 
 Installation is fairly easy, and has been tested on Linux and Windows (currently due to the way MacOS Catalina handles keyboard events, emulators that support simulated keyboard events are fairly limited, so while it does work on Mac, Catalina users will have to find an emulator that supports these events, this is due to the _input monitoring_ permission).
