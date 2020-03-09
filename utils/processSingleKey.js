@@ -1,6 +1,7 @@
 const robot = require("robotjs");
-robot.setKeyboardDelay(1);
+
 const proceessSingleKey = (key, repeated) => {
+  robot.setKeyboardDelay(1);
   do {
     robot.keyTap(key);
     repeated--;
