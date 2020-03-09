@@ -92,15 +92,18 @@ client.on("message", message => {
     let userColor = hexString(userName);
     let repeated = parseInt(msg["repeated"]); //number
     let multiKey = msg["multiKey"]; // boolean
-    let userInput = msg["key"]; // string/char of key
+    let userKey = msg["key"]; // string/char of key
+    let userInput = msg["userInput"];
     let activeMode = calculateSystemMode(systemMode);
     systemQueue[userInput]++;
+
     totalInputs++;
     // myScreen.gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
     topInput = calculateSystemQueue(systemQueue)[0];
     let topInputKey = topInput[0];
     let topInputCount = topInput[1];
     let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
+    // NOTE: multiKey breaks this need to rework.
     myScreen.topInputUpdate(topInputPercent, topInputKey);
 
     //check every 11 votes
@@ -168,8 +171,6 @@ client.on("message", message => {
       );
     }
     votes++;
-    // if (DEBUG)
-    //   myScreen.log(`\t It took that message ${Math.floor(totalTime)} ms`);
   }
   screen.render();
 });

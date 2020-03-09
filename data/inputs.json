@@ -19,6 +19,11 @@
     "enter": "enter"
   },
   "functionalKeys": {
-    "save": ["shift", "f1"]
+    "save": ["shift", "f1"],
+    "run": ["right", "down", "a"],
+    "attack1": ["a", "a"],
+    "attack2": ["a", "down", "a"],
+    "attack3": ["a", "down", "down", "a"],
+    "attack4": ["a", "down", "down", "down", "a"]
   }
 }

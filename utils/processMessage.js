@@ -31,19 +31,21 @@ const processMessage = message => {
   let priorityKeys = inputs["priorityKeys"];
   let functionalKeys = inputs["functionalKeys"];
   let remainingKeys = { ...inputs["actionKeys"], ...inputs["directionalKeys"] };
+  let userInput = msg;
 
+  //priorityKeys deprecated by default and therefore this check doesn't run.
   for (input in priorityKeys) {
     if (msg === input) {
       key = priorityKeys[input];
     }
   }
-  // functional keys should not be repeated
+  // functional keys should not be repeated since they require multiple keys.
   for (input in functionalKeys) {
     if (msg === input) {
       key = functionalKeys[input];
       multiKey = true;
       repeated = 0;
-      return { key, repeated, multiKey };
+      return { key, repeated, multiKey, userInput };
     }
   }
   //iterate valid input and set key,
@@ -56,7 +58,7 @@ const processMessage = message => {
   }
 
   if (key) {
-    return { key, repeated, multiKey };
+    return { key, repeated, multiKey, userInput };
   } else return null; //return null if not found, otherwise return obj with key and repeat value
 };
 

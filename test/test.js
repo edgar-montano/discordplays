@@ -28,4 +28,5 @@ console.log("[*] Testing multiKey complete");
 
 console.log("[!] Testing checkRepeatValue");
 require("./testCheckRepeatValue")(["up", "down9", "a1", "a0", "start"]);
+require("./testCheckRepeatValue")(["attack1"]);
 console.log("[*] Testing checkRepeatValue");

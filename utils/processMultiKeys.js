@@ -4,8 +4,7 @@ const robot = require("robotjs");
  */
 const processMultiKeys = inputArray => {
   //first key in input array should be teh key we are holding
-  robot.keyToggle(inputArray[0], "down");
-  for (let i = 1; i < inputArray.length; i++) robot.keyTap(inputArray[i]);
-  robot.keyToggle(inputArray[0], "up");
+  robot.setKeyboardDelay(100); // needs to avoid frame lag where we cannot input any data
+  for (let i = 0; i < inputArray.length; i++) robot.keyTap(inputArray[i]);
 };
 module.exports = processMultiKeys;
