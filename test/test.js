@@ -30,3 +30,7 @@ console.log("[!] Testing checkRepeatValue");
 require("./testCheckRepeatValue")(["up", "down9", "a1", "a0", "start"]);
 require("./testCheckRepeatValue")(["attack1"]);
 console.log("[*] Testing checkRepeatValue");
+
+console.log("[*] Testing reset System queue");
+require("./testResetSystemQueue")();
+console.log("[!] Testing reset System queue");

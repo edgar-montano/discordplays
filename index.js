@@ -108,7 +108,7 @@ client.on("message", message => {
 
     //check every 11 votes
     //also check if we are in democracy mode.
-    if (votes > 10) {
+    if (votes > 5) {
       myScreen.log(
         `{center}{yellow-fg}---------------------------{/yellow-fg}{/center}`
       );
@@ -137,7 +137,10 @@ client.on("message", message => {
         myScreen.log(
           "{yellow-fg}Polls are closed, please vote again for next input{/yellow-fg}"
         );
-        processKeys(topInput[0], 0, false);
+        let democracyVotedInput = processMessage(topInput[0]);
+        let democracyKey = democracyVotedInput["key"];
+        let democracyMultiKey = democracyVotedInput["multiKey"];
+        processKeys(democracyKey, 0, democracyMultiKey);
       }
       systemQueue = resetSystemQueue();
       totalInputs = 0;
@@ -154,7 +157,7 @@ client.on("message", message => {
     checkQueue++;
 
     if (activeMode === "anarchy") {
-      processKeys(userInput, repeated, multiKey);
+      processKeys(userKey, repeated, multiKey);
       //TIMER END FUNCTIONALITY
       let timeEnd = performance.now();
       let totalTime = Math.floor(timeEnd - timeStart);
