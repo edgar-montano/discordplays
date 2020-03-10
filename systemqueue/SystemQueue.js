@@ -28,6 +28,9 @@ class SystemQueue {
     if (this.systemQueue[input] === undefined) return false;
     if (this.topInput === null) this.topInput = input;
     this.systemQueue[input]++;
+    //if updated value is greater then also update topInput.
+    if (this.systemQueue[input] > this.systemQueue[this.topInput])
+      this.topInput = input;
     return true;
   }
 }
