@@ -108,16 +108,7 @@ client.on("message", message => {
 
     //check every 11 votes
     //also check if we are in democracy mode.
-    if (votes > 5) {
-      myScreen.log(
-        `{center}{yellow-fg}---------------------------{/yellow-fg}{/center}`
-      );
-      myScreen.log(
-        `{center}{yellow-fg}System queue has been reset{/yellow-fg}{/center}`
-      );
-      myScreen.log(
-        `{center}{yellow-fg}---------------------------{/yellow-fg}{/center}`
-      );
+    if (votes > 10) {
       votes = 0;
       //calculate proper input and render to screen
       if (activeMode === "democracy") {
