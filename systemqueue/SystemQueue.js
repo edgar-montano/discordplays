@@ -22,8 +22,14 @@ class SystemQueue {
    * Setter to update the value of the current input entered in the SystemQueue.
    * NOTE: This should call compareSystemInput explicitly to update the topInput value
    * @param {String} input - String of the desired input to increment by.
+   * @return {Boolean} true if update was success, false if it could not update value
    */
-  updateSystemQueue(input) {}
+  updateSystemQueue(input) {
+    if (this.systemQueue[input] === undefined) return false;
+    if (this.topInput === null) this.topInput = input;
+    this.systemQueue[input]++;
+    return true;
+  }
 }
 
 module.exports = SystemQueue;
