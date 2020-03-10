@@ -33,6 +33,20 @@ class SystemQueue {
       this.topInput = input;
     return true;
   }
+  /**
+   * Calculates the top Input, this function should not be called constantly as previously.
+   */
+  calculateTopInput() {
+    let count = 0;
+    let key = null;
+    for (item in this.systemQueue) {
+      if (this.systemQueue[item] > count) {
+        count = this.systemQueue[item];
+        key = item;
+      }
+    }
+    this.topInput = key;
+  }
 }
 
 module.exports = SystemQueue;
