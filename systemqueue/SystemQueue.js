@@ -47,6 +47,27 @@ class SystemQueue {
     }
     this.topInput = key;
   }
+  /**
+   * Updates system mode count.
+   * @param {String} mode - String of either "democracy" or "anarchy"
+   */
+  updateSystemMode(mode) {
+    mode = mode.toLowerCase();
+    if (mode === "democracy" || mode === "anarchy") this.systemMode[mode]++;
+  }
+  /**
+   * Calculates a percentage of current system mode.
+   * @param{String} mode - the mode to calculate percentage of
+   * @return{Number} - percent value of selected mode
+   */
+  calculateSystemModePercent(mode) {
+    let anarchyCount = this.systemMode["anarchy"];
+    let democracyCount = this.systemMode["democracy"];
+    let totalCount = anarchyCount + democracyCount;
+    if (mode === "democracy")
+      return Math.floor(democracyCount / totalCount) * 100;
+    else return Math.floor(anarchyCount / totalCount) * 100;
+  }
 }
 
 module.exports = SystemQueue;
