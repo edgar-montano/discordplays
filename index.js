@@ -69,10 +69,12 @@ client.on("message", message => {
   let msg = null;
   if (message.content.toLowerCase().includes("anarchy")) {
     systemQueue.updateSystemMode(message.content.toLowerCase());
-    myScreen.systemModeUpdate();
+    myScreen.systemModeUpdate(systemQueue.getSystemMode());
     // myScreen.systemModeUpdate(systemMode["democracy"], ++systemMode["anarchy"]);
   } else if (message.content.toLowerCase().includes("democracy")) {
-    myScreen.systemModeUpdate(++systemMode["democracy"], systemMode["anarchy"]);
+    systemQueue.updateSystemMode(message.content.toLowerCase());
+    myScreen.systemModeUpdate(systemQueue.getSystemMode());
+    // myScreen.systemModeUpdate(++systemMode["democracy"], systemMode["anarchy"]);
   } else {
     msg = processMessage(message.content);
   }
