@@ -7,8 +7,8 @@ const Discord = require("discord.js");
 const token = require("./utils/auth")();
 const client = new Discord.Client();
 // const hexString = require("./utils/hexString"); deprecated
-const processMessage = require("./utils/processMessage");
-const processKeys = require("./utils/processKeys");
+const processMessage = require("./process/message"); //previous processMessage deprecated
+const processKeys = require("./process/keys"); //previous processKeys deprecated
 /* Debug */
 const { performance } = require("perf_hooks");
 const DEBUG = false;
@@ -19,16 +19,10 @@ client.login(token).catch(error => console.error("Invalid token passed"));
 /* System Queue */
 const SystemQueue = require("./systemqueue/SystemQueue");
 const systemQueue = new SystemQueue(inputs);
+
 // NOTE: Please remove randomInput after initial test. Random Input
 // is only suppose to inject input to help seed latency test.
 const randomInput = ["up", "down", "left", "right", "a", "b", "enter"];
-
-// let systemMode = { anarchy: 1, democracy: 0 }; //no system order = anarchy mode
-// let topInput = null; //topInput gets processed from systemQueue most frequent input value
-// let systemQueue = resetSystemQueue(); //reinitialize the values to 0
-// let checkQueue = 0; //checkqueue is used to minimize the calls on when to check the queue.
-// let votes = 0;
-// let totalInputs = 0;
 
 /**
  * UI setup, requires blessed grid and box setup
@@ -73,9 +67,11 @@ client.on("message", message => {
   // if the message does not contain a system mode command,
   //simply process it
   let msg = null;
-  if (message.content.includes("anarchy")) {
-    myScreen.systemModeUpdate(systemMode["democracy"], ++systemMode["anarchy"]);
-  } else if (message.content.includes("democracy")) {
+  if (message.content.toLowerCase().includes("anarchy")) {
+    systemQueue.updateSystemMode(message.content.toLowerCase());
+    myScreen.systemModeUpdate();
+    // myScreen.systemModeUpdate(systemMode["democracy"], ++systemMode["anarchy"]);
+  } else if (message.content.toLowerCase().includes("democracy")) {
     myScreen.systemModeUpdate(++systemMode["democracy"], systemMode["anarchy"]);
   } else {
     msg = processMessage(message.content);

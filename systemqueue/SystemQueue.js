@@ -50,6 +50,13 @@ class SystemQueue {
     this.topInput = key;
   }
   /**
+   * Returns an Object of the system mode values
+   * @return {Object} systemMode - returns the system mode object, used to update ui.
+   */
+  getSystemMode() {
+    return this.systemMode;
+  }
+  /**
    * Updates system mode count.
    * @param {String} mode - String of either "democracy" or "anarchy"
    */

@@ -79,10 +79,11 @@ class MyScreen {
   /**
    * Update the gauge widget with the appropriate percentage of
    * democracy vs anarchy votes.
-   * @param {Number} democracy - number of votes for democracy
-   * @param {Number} anarchy - number of votes for democracy
+   * @param {Object} systemMode - Object containing 'democracy' and 'anarchy' count.
    */
-  systemModeUpdate(democracy, anarchy) {
+  systemModeUpdate(systemMode) {
+    let democracy = systemMode["democracy"];
+    let anarchy = systemMode["anarchy"];
     let total = democracy + anarchy;
     let democracyTally = Math.floor((democracy / total) * 100);
     let anarchyTally = Math.floor((anarchy / total) * 100);
