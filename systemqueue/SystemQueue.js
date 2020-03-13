@@ -66,6 +66,7 @@ class SystemQueue {
       ? "anarchy"
       : "democracy";
   }
+
   /**
    * Updates system mode count.
    * @param {String} mode - String of either "democracy" or "anarchy"

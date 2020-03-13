@@ -89,7 +89,7 @@ client.on("message", message => {
     // let multiKey = msg["multiKey"]; // boolean
     // let userKey = msg["key"]; // string/char of key
     // let userInput = msg["userInput"];
-    let activeMode = calculateSystemMode(systemMode);
+    let activeMode = systemQueue.calculateActiveMode();
     // systemQueue[userInput]++;
 
     // totalInputs++;
