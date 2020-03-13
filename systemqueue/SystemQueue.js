@@ -56,6 +56,16 @@ class SystemQueue {
   getSystemMode() {
     return this.systemMode;
   }
+
+  /**
+   * Returns the systeMode with the highest value as a string.
+   * @return {String} activeMode - return active mode as a string.
+   */
+  calculateActiveMode() {
+    return this.systemMode["anarchy"] > this.systemMode["democracy"]
+      ? "anarchy"
+      : "democracy";
+  }
   /**
    * Updates system mode count.
    * @param {String} mode - String of either "democracy" or "anarchy"

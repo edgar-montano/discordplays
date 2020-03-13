@@ -19,6 +19,7 @@ client.login(token).catch(error => console.error("Invalid token passed"));
 /* System Queue */
 const SystemQueue = require("./systemqueue/SystemQueue");
 const systemQueue = new SystemQueue(inputs);
+let votes = 0;
 
 // NOTE: Please remove randomInput after initial test. Random Input
 // is only suppose to inject input to help seed latency test.
@@ -83,15 +84,15 @@ client.on("message", message => {
 
   if (msg !== null) {
     let userName = message.member.user.tag;
-    let userColor = hexString(userName);
-    let repeated = parseInt(msg["repeated"]); //number
-    let multiKey = msg["multiKey"]; // boolean
-    let userKey = msg["key"]; // string/char of key
-    let userInput = msg["userInput"];
+    // let userColor = hexString(userName);
+    // let repeated = parseInt(msg["repeated"]); //number
+    // let multiKey = msg["multiKey"]; // boolean
+    // let userKey = msg["key"]; // string/char of key
+    // let userInput = msg["userInput"];
     let activeMode = calculateSystemMode(systemMode);
-    systemQueue[userInput]++;
+    // systemQueue[userInput]++;
 
-    totalInputs++;
+    // totalInputs++;
     // myScreen.gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
     topInput = calculateSystemQueue(systemQueue)[0];
     let topInputKey = topInput[0];
