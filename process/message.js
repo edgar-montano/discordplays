@@ -1,4 +1,5 @@
 const inputs = require("../data/inputs.json"); // TODO: Add hotswapping later.
+// const inputs = require(process.argv[2]) || require("../data/inputs.json");
 /**
  * Processes the user message for any valid input.
  * @param {String} msg - The original user message within message.content.

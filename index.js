@@ -18,7 +18,7 @@ client.login(token).catch(error => console.error("Invalid token passed"));
 
 /* System Queue */
 const calculateSystemQueue = require("./systemqueue/calculateSystemQueue");
-const compareSystemQueue = require("./systemqueue/compareSystemQueue");
+// const compareSystemQueue = require("./systemqueue/compareSystemQueue");
 const resetSystemQueue = require("./systemqueue/resetSystemQueue");
 const calculateSystemMode = require("./systemqueue/calculateSystemMode");
 
@@ -37,7 +37,7 @@ let totalInputs = 0;
  * UI setup, requires blessed grid and box setup
  */
 const blessed = require("blessed");
-const contrib = require("blessed-contrib");
+// const contrib = require("blessed-contrib");
 const MyScreen = require("./ui/MyScreen");
 let screen = blessed.screen({ smartCSR: true });
 const myScreen = new MyScreen(screen, "Discord Plays");
