@@ -8,6 +8,7 @@ class SystemQueue {
     this.topInput = null;
     this.systemQueue = {};
     this.systemMode = { democracy: 0, anarchy: 1 };
+    this.totalInput = 0;
     for (input in inputs) this.systemQueue[input] = 0;
   }
 
@@ -28,6 +29,7 @@ class SystemQueue {
     if (this.systemQueue[input] === undefined) return false;
     if (this.topInput === null) this.topInput = input;
     this.systemQueue[input]++;
+    this.totalInput++;
     //if updated value is greater then also update topInput.
     if (this.systemQueue[input] > this.systemQueue[this.topInput])
       this.topInput = input;
