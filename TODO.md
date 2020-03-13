@@ -14,3 +14,4 @@
 - [x] add latency test mode
 - [x] add system queue delayed processing keys
 - [ ] implement compare top input to constantly update input meter
+- [ ] add hotswapping inputs.json dat file.
