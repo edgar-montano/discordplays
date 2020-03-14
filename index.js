@@ -24,6 +24,7 @@ let votes = 0;
 // NOTE: Please remove randomInput after initial test. Random Input
 // is only suppose to inject input to help seed latency test.
 const randomInput = ["up", "down", "left", "right", "a", "b", "enter"];
+let checkQueue = 0; // used for bot
 
 /**
  * UI setup, requires blessed grid and box setup
@@ -69,11 +70,11 @@ client.on("message", message => {
   //simply process it
   let msg = null;
   if (message.content.toLowerCase().includes("anarchy")) {
-    systemQueue.updateSystemMode(message.content.toLowerCase());
+    systemQueue.updateSystemMode("anarchy");
     myScreen.systemModeUpdate(systemQueue.getSystemMode());
     // myScreen.systemModeUpdate(systemMode["democracy"], ++systemMode["anarchy"]);
   } else if (message.content.toLowerCase().includes("democracy")) {
-    systemQueue.updateSystemMode(message.content.toLowerCase());
+    systemQueue.updateSystemMode("democracy");
     myScreen.systemModeUpdate(systemQueue.getSystemMode());
     // myScreen.systemModeUpdate(++systemMode["democracy"], systemMode["anarchy"]);
   } else {
@@ -101,7 +102,10 @@ client.on("message", message => {
     // let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
     // // NOTE: multiKey breaks this need to rework.
     // // myScreen.topInputUpdate(systemQueue)
-    myScreen.topInputUpdate(topInputPercent, systemQueue.getTopInput());
+    myScreen.topInputUpdate(
+      systemQueue.getTopInput(),
+      systemQueue.getTopInput()
+    );
 
     //check every 11 votes
     //also check if we are in democracy mode.
@@ -125,12 +129,13 @@ client.on("message", message => {
         myScreen.log(
           "{yellow-fg}Polls are closed, please vote again for next input{/yellow-fg}"
         );
-        let democracyVotedInput = processMessage(topInput[0]);
-        let democracyKey = democracyVotedInput["key"];
-        let democracyMultiKey = democracyVotedInput["multiKey"];
-        processKeys(democracyKey, 0, democracyMultiKey);
+        let democracyVotedInput = processMessage(systemQueue.getTopInput());
+        // let democracyKey = democracyVotedInput["key"];
+        // let democracyMultiKey = democracyVotedInput["multiKey"];
+        processKeys(democracyVotedInput);
       }
-      systemQueue = resetSystemQueue();
+      systemQueue.resetSystemQueue();
+      // systemQueue = resetSystemQueue();
       totalInputs = 0;
     }
 
@@ -145,20 +150,16 @@ client.on("message", message => {
     checkQueue++;
 
     if (activeMode === "anarchy") {
-      processKeys(userKey, repeated, multiKey);
+      processKeys(msg);
       //TIMER END FUNCTIONALITY
       let timeEnd = performance.now();
       let totalTime = Math.floor(timeEnd - timeStart);
       myScreen.log(
         "{red-fg}" +
           userName.slice(0, 7).toUpperCase() +
-          "{/red-fg} => " +
-          userInput +
-          "  {green-fg}" +
-          repeated +
-          "{/green-fg} times \t@ " +
-          totalTime +
-          "ms"
+          "{/red-fg} => {green-fg}" +
+          msg +
+          "{/green-fg}"
       );
     }
     votes++;
