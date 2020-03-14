@@ -137,6 +137,7 @@ client.on("message", message => {
         // let democracyMultiKey = democracyVotedInput["multiKey"];
         processKeys(democracyVotedInput);
       }
+      myScreen.log("{green-fg}System Queue Reset{/green-fg}");
       systemQueue.resetSystemQueue();
     }
 
@@ -159,7 +160,7 @@ client.on("message", message => {
         "{red-fg}" +
           userName.slice(0, 7).toUpperCase() +
           "{/red-fg} => {green-fg}" +
-          msg +
+          userInput +
           "{/green-fg}"
       );
     }
