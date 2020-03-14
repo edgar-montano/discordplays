@@ -48,6 +48,14 @@ class SystemQueue {
   }
 
   /**
+   * Get the top input count
+   * @return {Number} - number of times top input was voted
+   */
+  getTopInputCount() {
+    return this.systemQueue[this.topInput];
+  }
+
+  /**
    * Calculates the percent of top input / total input
    * @return {Number} Rounded floating number of percentage.
    */

@@ -121,9 +121,9 @@ client.on("message", message => {
         );
         message.channel.send(
           "The most voted input has been: " +
-            topInput[0] +
+            systemQueue.getTopInput() +
             " with a total of " +
-            topInput[1] +
+            systemQueue.getTopInputCount() +
             " votes!"
         );
         myScreen.log(
