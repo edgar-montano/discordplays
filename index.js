@@ -1,14 +1,14 @@
 /* Required Libraries  */
 const robot = require("robotjs");
 const chalk = require("chalk"); //chalk depedency will be deprecated soon
-const hex = require("string-hex");
+// const hex = require("string-hex"); deprecated
 const Discord = require("discord.js");
 /* Utilities and helper functions */
 const token = require("./utils/auth")();
 const client = new Discord.Client();
-const hexString = require("./utils/hexString");
-const processMessage = require("./utils/processMessage");
-const processKeys = require("./utils/processKeys");
+// const hexString = require("./utils/hexString"); deprecated
+const processMessage = require("./process/message"); //previous processMessage deprecated
+const processKeys = require("./process/keys"); //previous processKeys deprecated
 /* Debug */
 const { performance } = require("perf_hooks");
 const DEBUG = false;
@@ -17,27 +17,20 @@ const inputs = require("./data/inputs.json");
 client.login(token).catch(error => console.error("Invalid token passed"));
 
 /* System Queue */
-const calculateSystemQueue = require("./systemqueue/calculateSystemQueue");
-// const compareSystemQueue = require("./systemqueue/compareSystemQueue");
-const resetSystemQueue = require("./systemqueue/resetSystemQueue");
-const calculateSystemMode = require("./systemqueue/calculateSystemMode");
+
+const SystemQueue = require("./systemqueue/SystemQueue");
+const systemQueue = new SystemQueue(inputs);
+let votes = 0;
 
 // NOTE: Please remove randomInput after initial test. Random Input
 // is only suppose to inject input to help seed latency test.
 const randomInput = ["up", "down", "left", "right", "a", "b", "enter"];
-
-let systemMode = { anarchy: 1, democracy: 0 }; //no system order = anarchy mode
-let topInput = null; //topInput gets processed from systemQueue most frequent input value
-let systemQueue = resetSystemQueue(); //reinitialize the values to 0
-let checkQueue = 0; //checkqueue is used to minimize the calls on when to check the queue.
-let votes = 0;
-let totalInputs = 0;
+let checkQueue = 0; // used for bot
 
 /**
  * UI setup, requires blessed grid and box setup
  */
 const blessed = require("blessed");
-// const contrib = require("blessed-contrib");
 const MyScreen = require("./ui/MyScreen");
 let screen = blessed.screen({ smartCSR: true });
 const myScreen = new MyScreen(screen, "Discord Plays");
@@ -77,10 +70,14 @@ client.on("message", message => {
   // if the message does not contain a system mode command,
   //simply process it
   let msg = null;
-  if (message.content.includes("anarchy")) {
-    myScreen.systemModeUpdate(systemMode["democracy"], ++systemMode["anarchy"]);
-  } else if (message.content.includes("democracy")) {
-    myScreen.systemModeUpdate(++systemMode["democracy"], systemMode["anarchy"]);
+  if (message.content.toLowerCase().includes("anarchy")) {
+    systemQueue.updateSystemMode("anarchy");
+    myScreen.systemModeUpdate(systemQueue.getSystemMode());
+    // myScreen.systemModeUpdate(systemMode["democracy"], ++systemMode["anarchy"]);
+  } else if (message.content.toLowerCase().includes("democracy")) {
+    systemQueue.updateSystemMode("democracy");
+    myScreen.systemModeUpdate(systemQueue.getSystemMode());
+    // myScreen.systemModeUpdate(++systemMode["democracy"], systemMode["anarchy"]);
   } else {
     msg = processMessage(message.content);
   }
@@ -89,22 +86,30 @@ client.on("message", message => {
 
   if (msg !== null) {
     let userName = message.member.user.tag;
-    let userColor = hexString(userName);
-    let repeated = parseInt(msg["repeated"]); //number
-    let multiKey = msg["multiKey"]; // boolean
-    let userKey = msg["key"]; // string/char of key
-    let userInput = msg["userInput"];
-    let activeMode = calculateSystemMode(systemMode);
-    systemQueue[userInput]++;
+    let userInput = message.content.toLowerCase();
+    // let userColor = hexString(userName);
+    // let repeated = parseInt(msg["repeated"]); //number
+    // let multiKey = msg["multiKey"]; // boolean
+    // let userKey = msg["key"]; // string/char of key
+    // let userInput = msg["userInput"];
+    let activeMode = systemQueue.calculateActiveMode();
+    // systemQueue[userInput]++;
 
-    totalInputs++;
+    // totalInputs++;
     // myScreen.gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
-    topInput = calculateSystemQueue(systemQueue)[0];
-    let topInputKey = topInput[0];
-    let topInputCount = topInput[1];
-    let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
-    // NOTE: multiKey breaks this need to rework.
-    myScreen.topInputUpdate(topInputPercent, topInputKey);
+    // topInput = calculateSystemQueue(systemQueue)[0];
+    // let topInputKey = topInput[0];
+    // let topInputCount = topInput[1];
+
+    // let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
+    // // NOTE: multiKey breaks this need to rework.
+    // // myScreen.topInputUpdate(systemQueue)
+    systemQueue.updateSystemQueue(userInput);
+
+    myScreen.topInputUpdate(
+      systemQueue.calculateTopInputPercent(),
+      systemQueue.getTopInput()
+    );
 
     //check every 11 votes
     //also check if we are in democracy mode.
@@ -117,24 +122,24 @@ client.on("message", message => {
         );
         message.channel.send(
           "The most voted input has been: " +
-            topInput[0] +
+            systemQueue.getTopInput() +
             " with a total of " +
-            topInput[1] +
+            systemQueue.getTopInputCount() +
             " votes!"
         );
         myScreen.log(
-          `{red-fg}VOTES ARE IN{/red-fg}:\t {green-fg}${topInputKey}{/green-fg} by ${topInputCount} votes`
+          `{red-fg}VOTES ARE IN{/red-fg}:\t {green-fg}${systemQueue.getTopInput()}{/green-fg} by ${systemQueue.getTopInputCount()} votes`
         );
         myScreen.log(
           "{yellow-fg}Polls are closed, please vote again for next input{/yellow-fg}"
         );
-        let democracyVotedInput = processMessage(topInput[0]);
-        let democracyKey = democracyVotedInput["key"];
-        let democracyMultiKey = democracyVotedInput["multiKey"];
-        processKeys(democracyKey, 0, democracyMultiKey);
+        let democracyVotedInput = processMessage(systemQueue.getTopInput());
+        // let democracyKey = democracyVotedInput["key"];
+        // let democracyMultiKey = democracyVotedInput["multiKey"];
+        processKeys(democracyVotedInput);
       }
-      systemQueue = resetSystemQueue();
-      totalInputs = 0;
+      myScreen.log("{green-fg}System Queue Reset{/green-fg}");
+      systemQueue.resetSystemQueue();
     }
 
     // This is to seed more input for demo purposes.
@@ -148,20 +153,16 @@ client.on("message", message => {
     checkQueue++;
 
     if (activeMode === "anarchy") {
-      processKeys(userKey, repeated, multiKey);
+      processKeys(msg);
       //TIMER END FUNCTIONALITY
       let timeEnd = performance.now();
       let totalTime = Math.floor(timeEnd - timeStart);
       myScreen.log(
         "{red-fg}" +
           userName.slice(0, 7).toUpperCase() +
-          "{/red-fg} => " +
+          "{/red-fg} => {green-fg}" +
           userInput +
-          "  {green-fg}" +
-          repeated +
-          "{/green-fg} times \t@ " +
-          totalTime +
-          "ms"
+          "{/green-fg}"
       );
     }
     votes++;

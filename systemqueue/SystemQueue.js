@@ -8,7 +8,10 @@ class SystemQueue {
     this.topInput = null;
     this.systemQueue = {};
     this.systemMode = { democracy: 0, anarchy: 1 };
-    for (input in inputs) this.systemQueue[input] = 0;
+    this.totalInput = 0;
+    for (this.input in inputs) {
+      this.systemQueue[this.input] = 0;
+    }
   }
 
   /**
@@ -26,27 +29,60 @@ class SystemQueue {
    */
   updateSystemQueue(input) {
     if (this.systemQueue[input] === undefined) return false;
-    if (this.topInput === null) this.topInput = input;
+    if (this.topInput === null) {
+      this.topInput = input;
+    }
     this.systemQueue[input]++;
+    this.totalInput++;
     //if updated value is greater then also update topInput.
     if (this.systemQueue[input] > this.systemQueue[this.topInput])
       this.topInput = input;
     return true;
   }
   /**
-   * Calculates the top Input, this function should not be called constantly as previously.
+   * Getter for top input field.
+   * @return {String} top input string.
    */
-  calculateTopInput() {
-    let count = 0;
-    let key = null;
-    for (item in this.systemQueue) {
-      if (this.systemQueue[item] > count) {
-        count = this.systemQueue[item];
-        key = item;
-      }
-    }
-    this.topInput = key;
+  getTopInput() {
+    return this.topInput;
   }
+
+  /**
+   * Get the top input count
+   * @return {Number} - number of times top input was voted
+   */
+  getTopInputCount() {
+    return this.systemQueue[this.topInput];
+  }
+
+  /**
+   * Calculates the percent of top input / total input
+   * @return {Number} Rounded floating number of percentage.
+   */
+  calculateTopInputPercent() {
+    return Math.floor(
+      (this.systemQueue[this.topInput] / this.totalInput) * 100
+    );
+  }
+
+  /**
+   * Returns an Object of the system mode values
+   * @return {Object} systemMode - returns the system mode object, used to update ui.
+   */
+  getSystemMode() {
+    return this.systemMode;
+  }
+
+  /**
+   * Returns the systeMode with the highest value as a string.
+   * @return {String} activeMode - return active mode as a string.
+   */
+  calculateActiveMode() {
+    return this.systemMode["anarchy"] > this.systemMode["democracy"]
+      ? "anarchy"
+      : "democracy";
+  }
+
   /**
    * Updates system mode count.
    * @param {String} mode - String of either "democracy" or "anarchy"
@@ -68,6 +104,12 @@ class SystemQueue {
       return Math.floor(democracyCount / totalCount) * 100;
     else return Math.floor(anarchyCount / totalCount) * 100;
   }
+
+  // calculateTopInputPercent
+  // getTopInputCount() {}
+  // getTopInput() {}
+  // getTotalInputCount() {}
+  // getTopInputCount() {}
 }
 
 module.exports = SystemQueue;
