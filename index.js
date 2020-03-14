@@ -127,7 +127,7 @@ client.on("message", message => {
             " votes!"
         );
         myScreen.log(
-          `{red-fg}VOTES ARE IN{/red-fg}:\t {green-fg}${topInputKey}{/green-fg} by ${topInputCount} votes`
+          `{red-fg}VOTES ARE IN{/red-fg}:\t {green-fg}${systemQueue.getTopInput()}{/green-fg} by ${systemQueue.getTopInputCount()} votes`
         );
         myScreen.log(
           "{yellow-fg}Polls are closed, please vote again for next input{/yellow-fg}"
@@ -138,8 +138,6 @@ client.on("message", message => {
         processKeys(democracyVotedInput);
       }
       systemQueue.resetSystemQueue();
-      // systemQueue = resetSystemQueue();
-      totalInputs = 0;
     }
 
     // This is to seed more input for demo purposes.
