@@ -20,6 +20,7 @@ class SystemQueue {
    */
   resetSystemQueue() {
     for (input in this.systemQueue) this.systemQueue[input] = 0;
+    this.totalInput = 0; //fixes percent calculations issue
   }
   /**
    * Setter to update the value of the current input entered in the SystemQueue.
