@@ -36,19 +36,19 @@ class SystemQueue {
     return true;
   }
   /**
-   * Calculates the top Input, this function should not be called constantly as previously.
+   * Getter for top input field.
+   * @return {String} top input string.
    */
-  calculateTopInput() {
-    let count = 0;
-    let key = null;
-    for (item in this.systemQueue) {
-      if (this.systemQueue[item] > count) {
-        count = this.systemQueue[item];
-        key = item;
-      }
-    }
-    this.topInput = key;
+  getTopInput() {
+    return this.topInput;
   }
+
+  /**
+   * Calculates the percent of top input / total input
+   * @return {Number} Rounded floating number of percentage.
+   */
+  calculateTopInputPercent() {}
+
   /**
    * Returns an Object of the system mode values
    * @return {Object} systemMode - returns the system mode object, used to update ui.
@@ -88,6 +88,12 @@ class SystemQueue {
       return Math.floor(democracyCount / totalCount) * 100;
     else return Math.floor(anarchyCount / totalCount) * 100;
   }
+
+  // calculateTopInputPercent
+  // getTopInputCount() {}
+  // getTopInput() {}
+  // getTotalInputCount() {}
+  // getTopInputCount() {}
 }
 
 module.exports = SystemQueue;

@@ -94,12 +94,14 @@ client.on("message", message => {
 
     // totalInputs++;
     // myScreen.gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
-    topInput = calculateSystemQueue(systemQueue)[0];
-    let topInputKey = topInput[0];
-    let topInputCount = topInput[1];
-    let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
-    // NOTE: multiKey breaks this need to rework.
-    myScreen.topInputUpdate(topInputPercent, topInputKey);
+    // topInput = calculateSystemQueue(systemQueue)[0];
+    // let topInputKey = topInput[0];
+    // let topInputCount = topInput[1];
+
+    // let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
+    // // NOTE: multiKey breaks this need to rework.
+    // // myScreen.topInputUpdate(systemQueue)
+    myScreen.topInputUpdate(topInputPercent, systemQueue.getTopInput());
 
     //check every 11 votes
     //also check if we are in democracy mode.
