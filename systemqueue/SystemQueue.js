@@ -52,7 +52,9 @@ class SystemQueue {
    * @return {Number} Rounded floating number of percentage.
    */
   calculateTopInputPercent() {
-    return Math.floor(this.systemQueue[this.topInput] / this.totalInput) * 100;
+    return Math.floor(
+      (this.systemQueue[this.topInput] / this.totalInput) * 100
+    );
   }
 
   /**
