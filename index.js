@@ -85,6 +85,7 @@ client.on("message", message => {
 
   if (msg !== null) {
     let userName = message.member.user.tag;
+    let userInput = message.content.toLowerCase();
     // let userColor = hexString(userName);
     // let repeated = parseInt(msg["repeated"]); //number
     // let multiKey = msg["multiKey"]; // boolean
@@ -102,8 +103,10 @@ client.on("message", message => {
     // let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
     // // NOTE: multiKey breaks this need to rework.
     // // myScreen.topInputUpdate(systemQueue)
+    systemQueue.updateSystemQueue(userInput);
+
     myScreen.topInputUpdate(
-      systemQueue.getTopInput(),
+      systemQueue.calculateTopInputPercent(),
       systemQueue.getTopInput()
     );
 

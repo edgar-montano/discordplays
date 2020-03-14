@@ -12,7 +12,11 @@ class MyScreen {
     this.screen = screen;
     this.screen.title = title;
     //setup grid to be 12x12
-    this.grid = new contrib.grid({ rows: 12, cols: 12, screen: this.screen });
+    this.grid = new contrib.grid({
+      rows: 12,
+      cols: 12,
+      screen: this.screen
+    });
     //gauge is used to determine democracy vs anarchy meter
     this.gauge = this.grid.set(0, 0, 2, 12, contrib.gauge, {
       label: "Democracy vs Anarchy",
@@ -23,7 +27,7 @@ class MyScreen {
     this.donut = this.grid.set(2, 0, 2, 12, contrib.donut, {
       label: "top inputs",
       radius: 8,
-      archWidth: 3,
+      archWidth: 4,
       yPadding: 2,
       data: [{ percent: 0, label: "key", color: "green" }]
     });

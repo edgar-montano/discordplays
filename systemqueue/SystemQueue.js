@@ -29,7 +29,9 @@ class SystemQueue {
    */
   updateSystemQueue(input) {
     if (this.systemQueue[input] === undefined) return false;
-    if (this.topInput === null) this.topInput = input;
+    if (this.topInput === null) {
+      this.topInput = input;
+    }
     this.systemQueue[input]++;
     this.totalInput++;
     //if updated value is greater then also update topInput.
@@ -49,7 +51,9 @@ class SystemQueue {
    * Calculates the percent of top input / total input
    * @return {Number} Rounded floating number of percentage.
    */
-  calculateTopInputPercent() {}
+  calculateTopInputPercent() {
+    return Math.floor(this.systemQueue[this.topInput] / this.totalInput) * 100;
+  }
 
   /**
    * Returns an Object of the system mode values
