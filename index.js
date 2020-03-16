@@ -1,10 +1,8 @@
 /* Required Libraries  */
-// const hex = require("string-hex"); deprecated
 const Discord = require("discord.js");
 /* Utilities and helper functions */
 const token = require("./utils/auth")();
 const client = new Discord.Client();
-// const hexString = require("./utils/hexString"); deprecated
 const processMessage = require("./process/message"); //previous processMessage deprecated
 const processKeys = require("./process/keys"); //previous processKeys deprecated
 /* Debug */

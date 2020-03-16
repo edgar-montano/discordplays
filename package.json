@@ -27,7 +27,6 @@
     "blessed-contrib": "^4.8.19",
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
-    "robotjs": "^0.6.0",
-    "string-hex": "^1.0.0"
+    "robotjs": "^0.6.0"
   }
 }
