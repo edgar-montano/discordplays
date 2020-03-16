@@ -1,6 +1,4 @@
 /* Required Libraries  */
-const robot = require("robotjs");
-const chalk = require("chalk"); //chalk depedency will be deprecated soon
 // const hex = require("string-hex"); deprecated
 const Discord = require("discord.js");
 /* Utilities and helper functions */
@@ -54,9 +52,7 @@ client.on("ready", () => {
 /**
  * Handle error event.
  */
-client.on("error", error =>
-  console.error(chalk.red(`An error has occured ${error}`))
-);
+client.on("error", error => console.error(`An error has occured ${error}`));
 
 /**
  * Process each message, if message contains input,
@@ -73,11 +69,9 @@ client.on("message", message => {
   if (message.content.toLowerCase().includes("anarchy")) {
     systemQueue.updateSystemMode("anarchy");
     myScreen.systemModeUpdate(systemQueue.getSystemMode());
-    // myScreen.systemModeUpdate(systemMode["democracy"], ++systemMode["anarchy"]);
   } else if (message.content.toLowerCase().includes("democracy")) {
     systemQueue.updateSystemMode("democracy");
     myScreen.systemModeUpdate(systemQueue.getSystemMode());
-    // myScreen.systemModeUpdate(++systemMode["democracy"], systemMode["anarchy"]);
   } else {
     msg = processMessage(message.content);
   }
@@ -87,23 +81,8 @@ client.on("message", message => {
   if (msg !== null) {
     let userName = message.member.user.tag;
     let userInput = message.content.toLowerCase();
-    // let userColor = hexString(userName);
-    // let repeated = parseInt(msg["repeated"]); //number
-    // let multiKey = msg["multiKey"]; // boolean
-    // let userKey = msg["key"]; // string/char of key
-    // let userInput = msg["userInput"];
     let activeMode = systemQueue.calculateActiveMode();
-    // systemQueue[userInput]++;
 
-    // totalInputs++;
-    // myScreen.gauge.setData([systemMode["democracy"], systemMode["anarchy"]]);
-    // topInput = calculateSystemQueue(systemQueue)[0];
-    // let topInputKey = topInput[0];
-    // let topInputCount = topInput[1];
-
-    // let topInputPercent = myScreen.calculatePercent(topInputCount, totalInputs);
-    // // NOTE: multiKey breaks this need to rework.
-    // // myScreen.topInputUpdate(systemQueue)
     systemQueue.updateSystemQueue(userInput);
 
     myScreen.topInputUpdate(
@@ -159,7 +138,7 @@ client.on("message", message => {
       let totalTime = Math.floor(timeEnd - timeStart);
       myScreen.log(
         "{red-fg}" +
-          userName.slice(0, 7).toUpperCase() +
+          userName.slice(0, 4).toUpperCase() +
           "{/red-fg} => {green-fg}" +
           userInput +
           "{/green-fg}"
