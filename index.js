@@ -3,13 +3,14 @@ const Discord = require("discord.js");
 /* Utilities and helper functions */
 const token = require("./utils/auth")();
 const client = new Discord.Client();
-const processMessage = require("./process/message"); //previous processMessage deprecated
-const processKeys = require("./process/keys"); //previous processKeys deprecated
+const processMessage = require("./process/message");
+const processKeys = require("./process/keys");
 /* Debug */
 const { performance } = require("perf_hooks");
 const DEBUG = false;
 /* Configuration files */
 const inputs = require("./data/inputs.json");
+const usage = require("./utils/usage")(inputs);
 client.login(token).catch(error => console.error("Invalid token passed"));
 
 /* System Queue */
@@ -22,6 +23,7 @@ let votes = 0;
 // is only suppose to inject input to help seed latency test.
 const randomInput = ["up", "down", "left", "right", "a", "b", "enter"];
 let checkQueue = 0; // used for bot
+let firstTimeMessage = {};
 
 /**
  * UI setup, requires blessed grid and box setup
@@ -38,12 +40,7 @@ const myScreen = new MyScreen(screen, "Discord Plays");
 
 client.on("ready", () => {
   let name = client.user.tag;
-  const usage = require("./utils/usage")(inputs);
   myScreen.setTextBox(`\t\tLogged in as ${name}\n${usage}`);
-  const channel = client.channels.get(process.env.CHANNEL);
-  if (channel) {
-    channel.send(`Welcome, I am **${client.user.tag}!**\n\t${usage}`);
-  }
   screen.render();
 });
 
@@ -59,6 +56,11 @@ client.on("error", error => console.error(`An error has occured ${error}`));
 client.on("message", message => {
   //TIMING LATENCY FUNCTIONALITY
   let timeStart = performance.now();
+  // If the server is new and hasn't received usage commands, send it.
+  if (!firstTimeMessage[message.guild.id]) {
+    firstTimeMessage[message.guild.id] = true;
+    message.channel.send(usage);
+  }
 
   // check if the message is trying to change system mode.
   // if the message does not contain a system mode command,
