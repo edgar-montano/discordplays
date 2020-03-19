@@ -5,5 +5,5 @@
  */
 const inputs = require("../data/inputs.json");
 module.exports = checkRepeatValue = msg => {
-  return /\d/g.test(msg) && !inputs["functionalKeys"][msg];
+  return /\d/g.test(msg);
 };
