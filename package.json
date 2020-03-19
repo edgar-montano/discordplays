@@ -4,7 +4,7 @@
   "description": "Simulates user keys and events allowing users to play a game collaboratively.",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch --verbose true",
     "start": "node index.js"
   },
   "repository": {
