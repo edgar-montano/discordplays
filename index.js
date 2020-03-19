@@ -113,8 +113,6 @@ client.on("message", message => {
           "{yellow-fg}Polls are closed, please vote again for next input{/yellow-fg}"
         );
         let democracyVotedInput = processMessage(systemQueue.getTopInput());
-        // let democracyKey = democracyVotedInput["key"];
-        // let democracyMultiKey = democracyVotedInput["multiKey"];
         processKeys(democracyVotedInput);
       }
       myScreen.log("{green-fg}System Queue Reset{/green-fg}");

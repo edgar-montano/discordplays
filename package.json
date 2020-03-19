@@ -4,7 +4,7 @@
   "description": "Simulates user keys and events allowing users to play a game collaboratively.",
   "main": "index.js",
   "scripts": {
-    "test": "node test/test.js",
+    "test": "jest",
     "start": "node index.js"
   },
   "repository": {
@@ -27,9 +27,10 @@
     "blessed-contrib": "^4.8.19",
     "discord.js": "^12.0.2",
     "dotenv": "^8.2.0",
-    "jest": "^25.1.0",
     "minimist": "^1.2.5",
     "robotjs": "^0.6.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^25.1.0"
+  }
 }
