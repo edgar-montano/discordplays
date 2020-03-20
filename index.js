@@ -5,6 +5,9 @@ const token = require("./utils/auth")();
 const client = new Discord.Client();
 const processMessage = require("./process/message");
 const processKeys = require("./process/keys");
+const processSentence = require("./process/sentence");
+const splitCharacters = require("./utils/splitCharacters");
+
 /* Debug */
 const { performance } = require("perf_hooks");
 const DEBUG = false;
@@ -76,7 +79,7 @@ client.on("message", message => {
     msg = processMessage(message.content);
   }
 
-  // if (message.author.bot) return;
+  //
 
   if (msg !== null) {
     let userName = message.member.user.tag;
@@ -143,7 +146,17 @@ client.on("message", message => {
       );
     }
     votes++;
+  } else {
+    if (message.author.bot) return; //prevents bot ception
+    let sentence = processSentence(message.content);
+    if (sentence) {
+      message.channel.send(
+        "Hm... that doesn't seem about right... did you mean to say:"
+      );
+      message.channel.send(sentence);
+    }
   }
+
   screen.render();
 });
 
