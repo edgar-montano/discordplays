@@ -5,10 +5,14 @@ test("Check the following string 'as' ", () => {
 });
 
 test("Check the following string 'dwn' ", () => {
-  expect(processSentence("dwn")).toBe("d");
+  expect(processSentence("dwn")).toBe("down");
 });
 
 //NOTE: TODO: THIS REQUIRES splitCharacters to be implemented.
-// test("Checking the following string 'atck1'", () => {
-//   expect(processSentence("atck1")).toBe("attack1");
-// });
+test("Checking the following string 'atck1'", () => {
+  expect(processSentence("atck1")).toBe("attack1");
+});
+
+test("Checking the following string 'r'", () => {
+  expect(processSentence("r")).toBe("r");
+});
