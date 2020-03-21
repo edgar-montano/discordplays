@@ -55,41 +55,20 @@ An example would be as follows:
 }
 ```
 
-Currently `inputs.json` is divided into four separate categories to make inputs easier to manage and for some future advance features.
+_inputs.json categories have now been deprecated and simplified._
 
-### priorityKeys
+### Mouse Click Support
 
-The first category is `priorityKeys`, these keys are Case-Sensitive keys, and are computed before the other keys, hence they are given priority over other commands. The reason for this is to overload key inputs with capitals, since all other keys are converted to lowercase. `priorityKeys` can thereby be set to traditional gaming keys such as WASD.
+Mouse clicks are now supported. To enter a mouse click command, edit the `inputs.json` file. The command must receive an object containing two items, `button` indicating the button on the mouse you want to click: `left`, `right`, and `middle`. And a `double` value, set to either `true` or `false` indicating if you should double click this button.
 
-```
-"priorityKeys": {
-    "W":"up",
-    "A":"left",
-    "S":"down",
-    "D":"right"
-},
-```
-
-In the recent build `priorityKeys` default values have been removed to enhance the mobile experience, since most phones automatically capitalize the first word.
-
-### directionalKeys
-
-The second category is `directionalKeys` which is fairly straight forward, they represent the possible directions the user can input. Unfortunately `directionalkeys` do not support complex directions such as diagonal movement, this however can be achieved using `functionalKeys` discussed later on. `directionalKeys` are meant to only simulate the d-pad on a controller.
-
-### actionKeys
-
-The third category is `actionKeys` which represent any action the user can take in-game. Such as pressing the `a` or `b` button on a GBA.
-
-### functionalKeys
-
-The final category is `functionalKeys` which represent complex actions that require more than one input from a user. `functionalKeys` were intended to only be used for advance emulator functionality such as "quick save" however can be overloaded to far more complex movements, like simulating an analogue stick or doing a diagonal direction.
-
-`functionalKeys` do not take a single _value_ but rather an array of values, where the first value is the desired input that would be held for the duration, while the subsequent values are the buttons that would be tapped. An example of this is the quick-save functionality in mGBA which requires the input `shift+f1`. To emulate complex movement in a gamee you can follow the format below.
+An example follows as below:
 
 ```
-{
-    "save": ["shift", "f1"],
-    "upright": ["up","right"],
-    "sonicboom":["left","right","a"]
-}
+    {
+        "up":"up",
+        "focus": { "button": "right", "double": false },
+        "down":"down"
+    }
 ```
+
+**Note this example is used For The King gameplay, it is not suggested you allow users to click on most games unless if the game has a mouse movement hook preventing a user from menu'ing out the game and gaining access to your system.**

@@ -12,3 +12,5 @@ All notable changes will be commited and reflected here.
 - now sends message on login if CHANNEL is set in .env file
 - merged json data files so inputs are contained within one file now.
 - can now process multiKey inputs for functionality such as save.
+- inputs.json simplified and categories now deprecated.
+- added mouse click functionality
