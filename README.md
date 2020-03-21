@@ -71,4 +71,4 @@ An example follows as below:
     }
 ```
 
-**Note this example is used For The King gameplay, it is not suggested you allow users to click on most games unless if the game has a mouse movement hook preventing a user from menu'ing out the game and gaining access to your system.**
+**Note this example is used in the "For The King" gamep. It is not suggested to allow users to click on most games unless the game has a mouse movement hook preventing a user from menu'ing out the game and gaining access to your system.**
