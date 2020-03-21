@@ -1,4 +1,5 @@
 {
+  "focus": { "button": "right", "double": false },
   "u": "up",
   "up": "up",
   "l": "left",
@@ -18,6 +19,5 @@
   "attack1": ["x", "x"],
   "attack2": ["x", "down", "x"],
   "attack3": ["x", "down", "down", "x"],
-  "attack4": ["x", "down", "down", "down", "x"],
-  "focus": { "button": "right", "double": false }
+  "attack4": ["x", "down", "down", "down", "x"]
 }
